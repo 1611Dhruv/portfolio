@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none">
+  <!-- University of Wisconsin-Madison -->
+  <!-- Shield/Crest background -->
+  <rect x="4" y="4" width="52" height="52" rx="4" fill="#C5050C"/>
+  <!-- Motion W -->
+  <path d="M12,16 L18,16 L22,36 L28,20 L32,20 L26,44 L22,44 L18,28 L14,44 L10,44 Z" fill="#FFFFFF" transform="translate(4,0)"/>
+  <path d="M28,16 L34,16 L38,36 L44,20 L48,20 L42,44 L38,44 L34,28 L30,44 L26,44 Z" fill="#FFFFFF" transform="translate(0,0)"/>
+  <!-- University Name -->
+  <text x="66" y="28" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="700" fill="#C5050C" letter-spacing="0.5">
+    UNIVERSITY OF
+  </text>
+  <text x="66" y="48" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="700" fill="#C5050C" letter-spacing="0.5">
+    WISCONSIN-MADISON
+  </text>
+</svg>

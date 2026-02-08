@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: portfolio
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8420:3000"
+    volumes:
+      - visits:/app/data
+
+volumes:
+  visits:
