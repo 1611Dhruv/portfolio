@@ -1,0 +1,153 @@
+{
+  "neofetch": {
+    "title": "dhruv@career",
+    "lines": {
+      "OS": "UW-Madison '26",
+      "Uptime": "3 internships, 1 research role, 2 startups",
+      "Shell": "C, C++, Python, C#, JavaScript",
+      "DE": "React, Next.js, Express, Django",
+      "WM": "gRPC, eBPF, ONNX, S3, xv6",
+      "Disk": "1 patent pending",
+      "Theme": "penguins [always]"
+    },
+    "colors": ["#ff5f57", "#febc2e", "#28c840", "#7ec8e3", "#f4a87c", "#c44dff", "#6C3CE0", "#E7582A"]
+  },
+  "groups": [
+    {
+      "dir": "commvault",
+      "cmd": "$ ls ~/commvault/",
+      "processes": [
+        {
+          "id": "dist-systems-storage",
+          "pid": "001",
+          "accent": "commvault",
+          "role": "SWE Intern",
+          "time": "Sep 2025\u2013Now",
+          "status": "running",
+          "title": "Distributed Systems & Storage",
+          "org": "Commvault",
+          "logo": "/img/logos/commvault.png",
+          "summary": "Designing gRPC-based multi-node communication for Commvault\u2019s S3 Vault to enable horizontal scaling. Implementing request routing, inter-node messaging, and caching mechanisms to reduce redundant calls and distribute load for GET requests and multipart uploads.",
+          "impact": "Enabling horizontal scaling for S3-compatible storage, improving throughput and resilience while reducing load on critical backup pipelines.",
+          "tags": ["C#", "gRPC", "Distributed Systems", "S3", "Caching", "Horizontal Scaling"]
+        },
+        {
+          "id": "build-systems-observability",
+          "pid": "002",
+          "accent": "commvault",
+          "role": "SWE Intern",
+          "time": "Sep 2025\u2013Now",
+          "status": "running",
+          "title": "Build Systems & Observability",
+          "org": "Commvault",
+          "logo": "/img/logos/commvault.png",
+          "summary": "Owning maintenance and feature development for Bindep, an internal C++ dependency analysis tool. Building health-check endpoints for observability, integrating AI-based log analysis and crash detection, and shipping frontend improvements across a 400K-line React codebase.",
+          "impact": "Improving reliability of a critical build tool with AI-driven crash analytics, reducing manual log inspection and accelerating issue resolution.",
+          "tags": ["C++", "React", "Observability", "AI Log Analysis", "Developer Tooling"]
+        },
+        {
+          "id": "cipher-algorithm-detection",
+          "pid": "003",
+          "accent": "commvault",
+          "role": "ML Intern",
+          "time": "May\u2013Aug 2025",
+          "status": "done",
+          "title": "Cipher Algorithm Detection",
+          "org": "Commvault",
+          "logo": "/img/logos/commvault.png",
+          "summary": "Designed an end-to-end cipher detection pipeline with NIST-inspired feature engineering on raw ciphertext. Ran 40+ experiments across XGBoost, LightGBM, CNNs, Transformers, and BERT-style models. Productionized via a C++ feature extractor with ONNX inference achieving ~270ms per file.",
+          "impact": "Delivered a production ML system for cipher detection meeting strict latency constraints. The technology is being patented by Commvault, with credit as a named patent holder.",
+          "tags": ["Python", "C++", "ML", "XGBoost", "Transformers", "ONNX", "Cryptography"]
+        }
+      ]
+    },
+    {
+      "dir": "uw-madison",
+      "cmd": "$ ls ~/uw-madison/",
+      "processes": [
+        {
+          "id": "kernel-policy-optimization",
+          "pid": "004",
+          "accent": "uwmadison",
+          "role": "Research Asst",
+          "time": "Jan 2025\u2013Now",
+          "status": "running",
+          "title": "LLM-Guided Linux Kernel Policy Optimization",
+          "org": "UW-Madison",
+          "logo": "/img/logos/uw-madison.png",
+          "summary": "Researching LLM-assisted generation and optimization of Linux kernel-space policies targeting Page Cache behavior. Using eBPF for fine-grained runtime signals and the OpenEvolve framework for controlled policy execution. Benchmarking across YCSB, DuckDB, and Twitter production traces.",
+          "impact": "Demonstrating that LLM-generated kernel policies can match or outperform existing techniques like ScaleCache under specific workloads, without compromising stability.",
+          "tags": ["Linux Kernel", "eBPF", "LLMs", "Page Cache", "Systems Research", "OpenEvolve"]
+        },
+        {
+          "id": "os-peer-mentor",
+          "pid": "005",
+          "accent": "uwmadison",
+          "role": "CS 537",
+          "time": "Sep 24\u2013May 25",
+          "status": "done",
+          "title": "Operating Systems Peer Mentor",
+          "org": "UW-Madison (CS 537)",
+          "logo": "/img/logos/uw-madison.png",
+          "summary": "Resolved 550+ student help tickets debugging C codebases across kernel and user space. Supported xv6 kernel projects (copy-on-write, virtual memory, concurrency) and systems assignments (distributed processing, RAID, Unix shells). Authored a GDB debugging guide adopted by TAs.",
+          "impact": "Handled peak queues of 15\u201320 students and ~120 tickets/day. Created lasting instructional assets reused across semesters.",
+          "tags": ["C", "xv6", "GDB", "OS", "Concurrency", "Mentorship"]
+        }
+      ]
+    },
+    {
+      "dir": "startups",
+      "cmd": "$ ls ~/startups/",
+      "processes": [
+        {
+          "id": "fullstack-fantasy-app",
+          "pid": "006",
+          "accent": "nexplay",
+          "role": "SWE Intern",
+          "time": "May\u2013Aug 2024",
+          "status": "done",
+          "title": "Full-Stack Fantasy App",
+          "org": "NexPlay Games",
+          "logo": "/img/logos/nextplay.png",
+          "summary": "Built core Express.js backend services from scratch for a real-time baseball fantasy app. Implemented caching and memoized APIs, translated Figma designs into responsive React interfaces, and improved Git workflows and codebase maintainability.",
+          "impact": "Reduced API calls per page from 400+ to ~30, significantly improving performance and scalability in a fast-paced startup environment.",
+          "tags": ["Express.js", "React", "Node.js", "REST APIs", "Caching", "Real-Time"]
+        },
+        {
+          "id": "smartmigrate-legal-agent",
+          "pid": "007",
+          "accent": "project",
+          "role": "Founding Eng",
+          "time": "Apr 2025",
+          "status": "done",
+          "title": "SmartMigrate \u2014 LLM-Powered Asylum Form Filling Agent",
+          "org": "SmartMigrate",
+          "logo": null,
+          "summary": "Co-founded an LLM-powered legal-tech agent to guide asylum seekers through Form I-589 with context-aware questioning, input validation, and structured output. Built a Next.js frontend and Django backend for LLM orchestration and form data management.",
+          "impact": "Showed potential to save 50+ attorney hours per case. Won Best Prototype award and successfully pitched to investors.",
+          "tags": ["Next.js", "Django", "LLMs", "Legal Tech", "Startup", "Social Impact"]
+        }
+      ]
+    },
+    {
+      "dir": "projects",
+      "cmd": "$ ls ~/projects/",
+      "processes": [
+        {
+          "id": "office-hours-queue",
+          "pid": "008",
+          "accent": "project",
+          "role": "Lead",
+          "time": "Sep 2025\u2013Now",
+          "status": "running",
+          "title": "Office Hours Queue \u2014 LLM-Powered TA & Student Support",
+          "org": "UW-Madison",
+          "logo": "/img/logos/uw-madison.png",
+          "summary": "Led a team of five to build a full-stack queue platform replacing a fragile Google Sheets workflow. Integrated LLMs via Microsoft AI Foundry for AI-assisted Q&A, code diffing, and debugging hints. Used Flask + React (Vite) with Redis caching and Server-Sent Events for real-time updates.",
+          "impact": "Reduced TA debugging time with LLM-generated diffs and summaries. Replaced a manual process with a scalable system, cutting queue backlogs.",
+          "tags": ["Flask", "React", "Redis", "SSE", "LLMs", "EdTech"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 title: Welcome to the Iceberg
-date: 2025-02-08
+date: 2026-02-08
 description: First post! Why I built this site, why penguins, and what to expect.
 tags: meta, penguins, hello-world
 ---
