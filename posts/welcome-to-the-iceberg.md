@@ -1,29 +1,20 @@
 ---
 title: Welcome to the Iceberg
 date: 2026-02-08
-description: First post! Why I built this site, why penguins, and what to expect.
-tags: meta, penguins, hello-world
+description: First post! What to expect here.
+tags: meta, hello-world
 ---
 
 # Welcome to the Iceberg
 
 Hey! If you're reading this, you've found my little corner of the internet. Welcome.
 
-## Why "the iceberg"?
+This is where I'll talk about cool things I learn and build. Every now and then I'll attempt to explain a niche algorithm I picked up, along with practical, useful things from Systems, ML, and the place where the two meet.
 
-Because penguins live on them, and because the best engineering work — like an iceberg — has 90% of its substance hidden beneath the surface. The polished demo hides weeks of debugging. The clean API hides a mountain of refactored spaghetti. You get the idea.
+## But why Penguins?
 
-## What to expect here
+<img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6978cedcac2498001d8fec3d.png" alt="A lone penguin walking across the snow toward a range of icy mountains" style="max-width: 500px; width: 100%;" />
 
-I'll be writing about:
-
-- **Systems stuff** — kernels, eBPF, storage, the things that make computers actually compute
-- **ML in the wild** — not the theory (there are better blogs for that), but the messy reality of shipping models
-- **Building things** — startups, side projects, and the lessons that come with them
-- **The occasional penguin fact** — did you know emperor penguins can dive to 1,800 feet? Wild.
-
-## Why penguins though?
-
-Honestly? They're just great. They waddle. They're resilient. They thrive in harsh environments. If that's not a metaphor for being a systems engineer, I don't know what is.
+[Because they are awesome :)](https://www.reddit.com/r/Filmmakers/comments/1qokrif/the_nihilist_penguin_tell_me_your_perspectives/)
 
 See you around.

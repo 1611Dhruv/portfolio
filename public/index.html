@@ -12,11 +12,16 @@
     <meta property="og:title" content="Dhruv Desai — ddesai.dev" />
     <meta
       property="og:description"
-      content="Systems engineer, ML builder, and penguin enthusiast at UW-Madison."
+      content="Systems engineer, ML builder, and penguin enthusiast. SDE at AWS ElastiCache."
     />
     <meta property="og:url" content="https://ddesai.dev" />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://ddesai.dev/penguin-400.png" />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="400" />
+    <meta property="og:image:alt" content="The ddesai.dev penguin" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://ddesai.dev/penguin-400.png" />
     <link rel="icon" href="/penguin-400.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -496,19 +501,22 @@
       .speech-bubble {
         position: absolute;
         bottom: 85px;
-        right: -60px;
+        left: 0;
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 0.6rem 1rem;
         font-size: 0.78rem;
+        line-height: 1.45;
         color: var(--text);
+        width: max-content;
         max-width: 220px;
         opacity: 0;
         transform: translateY(8px) scale(0.9);
         transition: all 0.3s ease;
         pointer-events: none;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: break-word;
         z-index: 10;
       }
       .speech-bubble.show {
@@ -519,7 +527,7 @@
         content: "";
         position: absolute;
         bottom: -6px;
-        left: 24px;
+        left: var(--tail-x, 24px);
         width: 12px;
         height: 12px;
         background: var(--bg-card);
@@ -558,8 +566,8 @@
       /* Click counter */
       .click-counter {
         position: absolute;
-        top: -10px;
-        right: -15px;
+        bottom: 62px;
+        right: -38px;
         background: var(--ice);
         color: var(--bg);
         font-family: "JetBrains Mono", monospace;
@@ -638,42 +646,6 @@
         font-size: 0.9rem;
         color: var(--ice);
         font-weight: 500;
-      }
-
-      /* ─── FUN STATS BAR (homepage) ─── */
-      .fun-stats {
-        display: flex;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-        padding: 2rem 0;
-      }
-      .stat-card {
-        flex: 1;
-        min-width: 180px;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1.25rem;
-        text-align: center;
-        transition: all 0.3s;
-        cursor: default;
-      }
-      .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        border-color: rgba(126, 200, 227, 0.25);
-      }
-      .stat-number {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--ice);
-        line-height: 1.2;
-      }
-      .stat-label {
-        font-size: 0.8rem;
-        color: var(--text-dim);
-        margin-top: 0.25rem;
       }
 
       /* ─── ENHANCED CARDS ─── */
@@ -899,6 +871,53 @@
       .eating-penguin:hover {
         transform: scale(1.05);
       }
+      .about-windows {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        gap: 1.25rem;
+        align-items: stretch;
+      }
+      .about-windows .terminal {
+        margin-bottom: 0;
+      }
+      .music-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 1.1rem 1.25rem 1.4rem;
+        text-decoration: none;
+        color: inherit;
+      }
+      .music-label {
+        align-self: flex-start;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-bottom: 0.4rem;
+      }
+      .music-cover {
+        width: 100%;
+        max-width: 190px;
+        aspect-ratio: 1;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        transition: transform 0.25s;
+      }
+      .music-body:hover .music-cover {
+        transform: scale(1.03);
+      }
+      .music-title {
+        margin-top: 0.6rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-bright);
+        text-align: center;
+      }
+      .music-artist {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+      }
       .neofetch-stats {
         display: flex;
         flex-direction: column;
@@ -1078,24 +1097,81 @@
       }
 
       /* ─── EXPANDED PROCESS DETAIL ─── */
+      /* opens to its real height, so nothing gets cut off */
       .proc-detail {
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        transition:
-          max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-          opacity 0.35s ease;
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .proc-row.expanded + .proc-detail {
-        max-height: 500px;
-        opacity: 1;
+        grid-template-rows: 1fr;
       }
       .proc-detail-inner {
-        padding: 0.75rem 1rem 1.25rem;
+        overflow: hidden;
+        min-height: 0;
+      }
+      .detail-body {
+        padding: 0.4rem 1rem 1.25rem 1rem;
+      }
+      /* lines print in one after another, like cat output */
+      .detail-body > * {
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+      .proc-row.expanded + .proc-detail .detail-body > * {
+        opacity: 1;
+        transform: none;
+      }
+      .proc-row.expanded + .proc-detail .detail-body > :nth-child(2) { transition-delay: 0.06s; }
+      .proc-row.expanded + .proc-detail .detail-body > :nth-child(3) { transition-delay: 0.12s; }
+      .proc-row.expanded + .proc-detail .detail-body > :nth-child(4) { transition-delay: 0.18s; }
+      .proc-row.expanded + .proc-detail .detail-body > :nth-child(5) { transition-delay: 0.24s; }
+      .detail-cmd {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        margin-bottom: 0.75rem;
+      }
+      .detail-cmd span {
+        color: var(--ice);
+      }
+      .detail-head {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.7rem;
+      }
+      .detail-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-bright);
+        line-height: 1.3;
+      }
+      .detail-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        margin-top: 0.2rem;
+      }
+      .detail-arrow {
+        font-weight: 700;
+        margin-right: 0.2rem;
+      }
+      .proc-caret {
+        display: inline-block;
+        width: 1.1em;
+        color: var(--text-dim);
+        transition: transform 0.25s ease, color 0.25s ease;
+      }
+      .proc-row.expanded .proc-caret {
+        transform: rotate(90deg);
+        color: var(--ice);
       }
       .proc-detail-inner .detail-logo {
-        width: 42px;
-        height: 42px;
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
         border-radius: 8px;
         background: var(--bg-raised);
         border: 1px solid var(--border);
@@ -1103,8 +1179,7 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        padding: 5px;
-        margin-bottom: 0.6rem;
+        padding: 4px;
       }
       .proc-detail-inner .detail-logo img {
         width: 100%;
@@ -1118,14 +1193,10 @@
         margin-bottom: 0.75rem;
       }
       .proc-detail-inner .detail-impact {
-        font-size: 0.82rem;
+        font-size: 0.84rem;
         color: var(--warm);
         line-height: 1.6;
-        padding: 0.6rem 0.9rem;
-        background: rgba(244, 168, 124, 0.05);
-        border-left: 2px solid var(--warm);
-        border-radius: 0 6px 6px 0;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.85rem;
       }
       .proc-detail-inner .detail-tags {
         display: flex;
@@ -1150,6 +1221,16 @@
       .proc-detail-inner .tag-nexplay {
         background: rgba(108, 60, 224, 0.1);
         color: #a893f0;
+      }
+      .detail-impact a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+      }
+      .proc-detail-inner .tag-aws {
+        background: rgba(255, 153, 0, 0.1);
+        color: #ffb84d;
       }
       .proc-detail-inner .tag-warm {
         background: rgba(244, 168, 124, 0.1);
@@ -1227,6 +1308,15 @@
       .secret-hints {
         text-align: center;
         padding: 2rem 0 0;
+      }
+      .hint-psst {
+        display: inline-block;
+        font-weight: 700;
+        color: var(--ice);
+        margin-right: 0.35em;
+        font-size: calc(1em * var(--psst, 1));
+        line-height: 1;
+        transition: font-size 0.15s ease-out;
       }
       .hint-text {
         font-family: "JetBrains Mono", monospace;
@@ -1341,6 +1431,9 @@
         margin-bottom: 2.5rem;
         flex-wrap: wrap;
       }
+      .post-view-inner.container {
+        max-width: 820px; /* ~80 characters per line for running text */
+      }
       .post-content {
         font-size: 1rem;
         line-height: 1.85;
@@ -1412,6 +1505,221 @@
         background: var(--ice-glow);
         border-radius: 0 8px 8px 0;
       }
+      /* ─── Gallery exhibits: a wide "wall" with a spotlight, the piece frozen in ice, a museum placard ─── */
+      .post-content .exhibit {
+        margin: 2.25rem 0 2rem;
+      }
+      .post-content .exhibit-piece {
+        min-width: 0;
+        padding: 1.75rem 2rem;
+        margin-bottom: 0.9rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        line-height: 1.8;
+        color: var(--text-bright);
+        word-break: break-word;
+        background: var(--bg-raised);
+        border: 1px solid var(--border);
+      }
+      .post-content .exhibit-piece p {
+        position: relative;
+        margin-bottom: 0.75rem;
+      }
+      .post-content .exhibit-piece p:last-child {
+        margin-bottom: 0;
+      }
+      .post-content .exhibit-token,
+      .post-content .exhibit-elide {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78em;
+        font-variant-ligatures: none;
+        color: var(--text-dim);
+      }
+      /* the placard beside the work */
+      .post-content .exhibit-label {
+        font-size: 0.82rem;
+        line-height: 1.65;
+        color: var(--text-dim);
+        padding-left: 0.9rem;
+        border-left: 2px solid var(--border);
+      }
+      .post-content .exhibit-label span {
+        display: block;
+      }
+      .post-content .exhibit-label strong {
+        display: block;
+        margin-bottom: 0.15rem;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        color: var(--text-bright);
+        text-wrap: balance;
+      }
+      @media (max-width: 600px) {
+        .post-content {
+          font-size: 0.95rem;
+          line-height: 1.75;
+        }
+        .post-content .exhibit-piece {
+          font-size: 0.95rem;
+          padding: 1.4rem 1.25rem;
+        }
+      }
+      /* while reading a post, soften the falling snow so it never fights the text */
+      body[data-view="post"] .snowflakes {
+        filter: blur(2px);
+        opacity: 0.45 !important;
+      }
+      .post-content img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 1.75rem auto;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-raised);
+      }
+      .post-content hr {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 2.5rem 0;
+      }
+      .post-content table {
+        width: 100%;
+        margin-bottom: 1.5rem;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        display: block;
+        overflow-x: auto;
+      }
+      .post-content th,
+      .post-content td {
+        padding: 0.5rem 0.8rem;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        vertical-align: top;
+      }
+      .post-content th {
+        color: var(--text-bright);
+        font-weight: 600;
+      }
+      .post-content td:first-child {
+        color: var(--text-dim);
+        white-space: nowrap;
+      }
+
+      /* ─── POST SERIES / PAGER ─── */
+      .post-series {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+      }
+      .post-series-heading {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-dim);
+        margin-bottom: 1rem;
+      }
+      .post-series-list {
+        list-style: none;
+        counter-reset: series;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      .post-series-list li {
+        counter-increment: series;
+      }
+      .post-series-item {
+        display: grid;
+        grid-template-columns: 2rem 1fr auto;
+        grid-template-areas: "num title date" "num desc date";
+        column-gap: 0.75rem;
+        align-items: center;
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-raised);
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .post-series-item::before {
+        content: counter(series, decimal-leading-zero);
+        grid-area: num;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-dim);
+      }
+      .post-series-item:hover {
+        border-color: var(--ice);
+        transform: translateX(3px);
+      }
+      .post-series-title {
+        grid-area: title;
+        font-weight: 600;
+        color: var(--text-bright);
+      }
+      .post-series-desc {
+        grid-area: desc;
+        font-size: 0.86rem;
+        color: var(--text-dim);
+      }
+      .post-series-date {
+        grid-area: date;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        white-space: nowrap;
+      }
+      .post-pager {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+      }
+      .post-pager-link {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-raised);
+        text-decoration: none;
+        color: var(--text-bright);
+        font-weight: 600;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .post-pager-link:hover {
+        border-color: var(--ice);
+      }
+      .post-pager-link.next {
+        text-align: right;
+        align-items: flex-end;
+      }
+      .post-pager-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: var(--text-dim);
+      }
+      @media (max-width: 600px) {
+        .post-series-item {
+          grid-template-columns: 2rem 1fr;
+          grid-template-areas: "num title" "num desc" "num date";
+        }
+        .post-pager {
+          grid-template-columns: 1fr;
+        }
+      }
 
       /* ─── FOOTER ─── */
       footer {
@@ -1467,6 +1775,11 @@
         margin-top: 0.5rem;
         opacity: 0.6;
         font-style: italic;
+      }
+
+      /* Easter eggs need a keyboard, so their hints stay off touch devices. */
+      @media (max-width: 700px), (hover: none) and (pointer: coarse) {
+        .secret-hints { display: none !important; }
       }
 
       /* ─── PENGUIN PARTY (Konami code) ─── */
@@ -1580,6 +1893,67 @@
         opacity: 0.7;
       }
 
+      /* ─── HOLLOW PURPLE: motion warning ─── */
+      .hp-warn {
+        position: fixed;
+        inset: 0;
+        z-index: 100000;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+        background: rgba(4, 0, 14, 0.6);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      .hp-warn.show {
+        opacity: 1;
+      }
+      .hp-warn-card {
+        max-width: 360px;
+        padding: 1.4rem 1.5rem 1.2rem;
+        border-radius: 14px;
+        background: rgba(12, 4, 28, 0.96);
+        border: 1px solid rgba(147, 51, 234, 0.5);
+        box-shadow: 0 0 40px rgba(147, 51, 234, 0.25);
+        color: var(--text);
+      }
+      .hp-warn-title {
+        font-weight: 700;
+        color: #e9d5ff;
+        margin-bottom: 0.5rem;
+      }
+      .hp-warn-text {
+        font-size: 0.88rem;
+        line-height: 1.55;
+        color: var(--text-dim);
+        margin-bottom: 1.1rem;
+      }
+      .hp-warn-actions {
+        display: flex;
+        gap: 0.6rem;
+        justify-content: flex-end;
+      }
+      .hp-warn-actions button {
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 0.45rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 1px solid rgba(147, 51, 234, 0.5);
+        background: transparent;
+        color: var(--text);
+      }
+      .hp-warn-actions button.primary {
+        background: #9333ea;
+        border-color: #9333ea;
+        color: #fff;
+      }
+      .hp-warn-actions button:focus-visible {
+        outline: 2px solid #e9d5ff;
+        outline-offset: 2px;
+      }
+
       /* ─── TOAST NOTIFICATIONS ─── */
       .toast {
         position: fixed;
@@ -1619,6 +1993,49 @@
       }
 
       /* ─── HOLLOW PURPLE (Gojo) ─── */
+      .hp-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+      }
+      .hp-card {
+        position: absolute;
+        top: 14%;
+        left: 50%;
+        z-index: 11;
+        transform: translate(-50%, 10px) scale(0.96);
+        opacity: 0;
+        text-align: center;
+        pointer-events: none;
+        transition:
+          opacity 0.45s ease,
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .hp-card.show {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+      }
+      .hp-card-kanji {
+        font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        font-weight: 900;
+        font-size: clamp(4rem, 11vw, 9rem);
+        line-height: 1;
+        color: #fff;
+        text-shadow:
+          0 0 18px var(--hp-glow, #a855f7),
+          0 0 60px var(--hp-glow, #a855f7);
+      }
+      .hp-card-cap {
+        margin-top: 0.6rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 0 14px var(--hp-glow, #a855f7);
+      }
       .hp-overlay {
         position: fixed;
         top: 0;
@@ -2282,8 +2699,12 @@
         font-family: "Inter", sans-serif;
         font-size: 0.82rem;
         font-weight: 500;
+        line-height: 1.45;
         color: #e9d5ff;
-        white-space: nowrap;
+        width: max-content;
+        max-width: min(260px, calc(100vw - 160px));
+        white-space: normal;
+        overflow-wrap: break-word;
         pointer-events: none;
         opacity: 0;
         transition: opacity 0.4s ease;
@@ -2304,11 +2725,17 @@
         border-bottom: 1.5px solid rgba(147, 51, 234, 0.5);
         transform: rotate(45deg);
       }
+      .gojo-roam-bubble::after {
+        top: var(--tail-y, 14px);
+        bottom: auto;
+      }
       .gojo-roam-bubble.from-left::after {
-        left: 20px;
+        left: -6px;
+        transform: rotate(135deg);
       }
       .gojo-roam-bubble.from-right::after {
-        right: 20px;
+        right: -6px;
+        transform: rotate(-45deg);
       }
       @keyframes gojoEnterLeft {
         0% {
@@ -2548,6 +2975,23 @@
         .nav-links {
           gap: 1rem;
         }
+      }
+      @media (max-width: 700px) {
+        .snowflakes {
+          display: none;
+        }
+        .nav-logo span {
+          display: none;
+        }
+      }
+      @media (max-width: 420px) {
+        .nav-links {
+          gap: 0.75rem;
+          margin-left: 0.75rem;
+        }
+        .nav-links a {
+          font-size: 0.85rem;
+        }
         .hero {
           flex-direction: column-reverse;
           text-align: center;
@@ -2578,9 +3022,12 @@
           right: -15px;
           bottom: -15px;
         }
+        .click-counter {
+          bottom: 48px;
+          right: -18px;
+        }
         .speech-bubble {
-          right: -40px;
-          max-width: 180px;
+          max-width: min(180px, calc(100vw - 2rem));
           font-size: 0.72rem;
         }
         .card {
@@ -2619,6 +3066,12 @@
         .neofetch-colors {
           justify-content: center;
         }
+        .about-windows {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .music-cover {
+          max-width: 160px;
+        }
         .proc-org,
         .proc-time {
           display: none;
@@ -2639,16 +3092,6 @@
         .post-title {
           font-size: 1.6rem;
         }
-        .fun-stats {
-          gap: 0.75rem;
-        }
-        .stat-card {
-          min-width: 130px;
-          padding: 1rem;
-        }
-        .stat-number {
-          font-size: 1.5rem;
-        }
         .toast {
           right: 1rem;
           left: 1rem;
@@ -2666,29 +3109,16 @@
 
     <!-- Hollow Purple overlay -->
     <div class="hp-overlay" id="hp-overlay">
-      <div class="hp-ambient hp-ambient-1" id="hp-amb-1"></div>
-      <div class="hp-ambient hp-ambient-2" id="hp-amb-2"></div>
-      <div class="hp-ambient hp-ambient-3" id="hp-amb-3"></div>
-      <div class="hp-ambient hp-ambient-4" id="hp-amb-4"></div>
-      <div class="hp-ambient hp-ambient-5" id="hp-amb-5"></div>
-      <div class="hp-energy-ring hp-energy-ring-1" id="hp-ering-1"></div>
-      <div class="hp-energy-ring hp-energy-ring-2" id="hp-ering-2"></div>
-      <div class="hp-energy-ring hp-energy-ring-3" id="hp-ering-3"></div>
+      <canvas class="hp-canvas" id="hp-canvas"></canvas>
+      <div class="hp-card" id="hp-card">
+        <div class="hp-card-cap" id="hp-card-cap"></div>
+      </div>
       <img
         src="/penguin-gojo-400.png"
         alt="Gojo Penguin"
         class="hp-gojo"
         id="hp-gojo"
       />
-      <div class="hp-orb-blue" id="hp-orb-blue">
-        <div class="hp-orb-spin"></div>
-      </div>
-      <div class="hp-orb-red" id="hp-orb-red">
-        <div class="hp-orb-spin"></div>
-      </div>
-      <div class="hp-core" id="hp-core"></div>
-      <div class="hp-beam" id="hp-beam"></div>
-      <div class="hp-flash" id="hp-flash"></div>
       <div class="hp-thought" id="hp-thought">
         <div class="hp-thought-main">Nah, I'd Win.</div>
         <div class="hp-thought-sub">Hollow Purple</div>
@@ -2733,9 +3163,8 @@
       </a>
       <ul class="nav-links">
         <li><a data-link="/">Home</a></li>
-        <li><a data-link="/work">Work</a></li>
+        <li><a data-link="/about">About</a></li>
         <li><a data-link="/blog">Blog</a></li>
-        <li><a href="/Dhruv_Desai.pdf" target="_blank">Resume</a></li>
       </ul>
     </nav>
 
@@ -2750,16 +3179,13 @@
             <h1 class="hero-name" id="hero-name">Dhruv Desai</h1>
             <div class="hero-domain">ddesai.dev</div>
             <p class="hero-tagline">
-              Systems nerd and builder at UW&ndash;Madison. I poke at Linux
-              kernels, ship ML pipelines, wrangle distributed systems, and
-              occasionally build things that help people.
+              Systems nerd and builder, now at AWS ElastiCache in Seattle. I
+              poke at Linux kernels, write GPU kernels, wrangle distributed
+              systems, and occasionally build things that help people.
             </p>
             <div class="hero-links">
-              <a data-link="/work" class="btn-primary">See my work</a>
-              <a href="/Dhruv_Desai.pdf" target="_blank" class="btn-outline"
-                >Resume &nearr;</a
-              >
-              <a data-link="/blog" class="btn-outline">Blog &nearr;</a>
+              <a data-link="/about" class="btn-primary">About</a>
+              <a data-link="/blog/welcome-to-the-iceberg" class="btn-outline">Blog &nearr;</a>
             </div>
             <div class="hero-socials">
               <a
@@ -2816,32 +3242,6 @@
           </div>
         </section>
 
-        <!-- Fun stats -->
-        <section class="container">
-          <div class="fun-stats reveal">
-            <div class="stat-card">
-              <div class="stat-number" data-count="3">0</div>
-              <div class="stat-label">internships shipped</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number" data-count="550">0</div>
-              <div class="stat-label">help tickets crushed</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number" data-count="40">0</div>
-              <div class="stat-label">ML experiments ran</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number" data-count="1">0</div>
-              <div class="stat-label">patent pending</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-number" id="visit-counter" data-count="0">0</div>
-              <div class="stat-label">iceberg visitors</div>
-            </div>
-          </div>
-        </section>
-
         <!-- Blog preview -->
         <section class="container" id="blog-preview">
           <div class="section-header reveal">
@@ -2859,8 +3259,8 @@
         <section class="container">
           <div class="secret-hints reveal">
             <p class="hint-text">
-              psst... try the konami code. click the penguin. type "disco" or
-              "matrix". press "i" to open a terminal. but would you lose?
+              <span class="hint-psst">psst...</span> try the konami code. click the penguin. type "disco" or
+              "matrix". press ` or ~ to open a terminal. but would you lose?
             </p>
           </div>
         </section>
@@ -2874,7 +3274,6 @@
           />
           <p class="footer-text">
             Built by Dhruv Desai &middot;
-            <a href="/Dhruv_Desai.pdf" target="_blank">Resume</a> &middot;
             ddesai.dev
           </p>
           <div class="footer-socials">
@@ -2917,6 +3316,7 @@
       <!-- ═══════════ WORK ═══════════ -->
       <div id="work-view" class="page" style="display: none">
         <div class="container" style="padding-top: 6rem">
+          <div class="about-windows">
           <!-- Neofetch block -->
           <div class="terminal reveal">
             <div class="terminal-bar">
@@ -2934,12 +3334,38 @@
               <div class="neofetch-stats" id="neofetch-stats"></div>
             </div>
           </div>
+          <!-- Music app window -->
+          <div class="terminal music-app reveal">
+            <div class="terminal-bar">
+              <span class="terminal-dot" style="background: #ff5f57"></span>
+              <span class="terminal-dot" style="background: #febc2e"></span>
+              <span class="terminal-dot" style="background: #28c840"></span>
+              <span class="terminal-title">Music</span>
+            </div>
+            <a
+              class="music-body"
+              href="https://music.apple.com/in/album/6772950585"
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="music-label">&#9835; now playing</span>
+              <img
+                class="music-cover"
+                src="/img/music/piss-in-the-wind.jpg"
+                alt="Piss In The Wind album cover"
+              />
+              <span class="music-title">Piss In The Wind (Deluxe)</span>
+              <span class="music-artist">Joji &middot; 2026</span>
+            </a>
+          </div>
+          </div>
+
 
           <!-- Process groups rendered by JS from /data/experience.json -->
           <div id="work-groups"></div>
 
           <div class="secret-hints reveal" style="padding-top: 2rem">
-            <p class="hint-text">press "i" to open an interactive terminal</p>
+            <p class="hint-text">press ` or ~ to open an interactive terminal</p>
           </div>
         </div>
         <footer>
@@ -3061,6 +3487,7 @@
           <p class="footer-quip">this penguin approves of your visit</p>
         </footer>
       </div>
+
     </div>
 
     <script>
@@ -3103,32 +3530,6 @@
           .forEach((el) => obs.observe(el));
       }
 
-      // ─── ANIMATED COUNTERS ───
-      function animateCounters() {
-        document.querySelectorAll("[data-count]").forEach((el) => {
-          const target = parseInt(el.dataset.count);
-          const duration = 1500;
-          const start = performance.now();
-          function step(now) {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(eased * target);
-            if (progress < 1) requestAnimationFrame(step);
-          }
-          const obs = new IntersectionObserver(
-            (entries) => {
-              if (entries[0].isIntersecting) {
-                requestAnimationFrame(step);
-                obs.unobserve(el);
-              }
-            },
-            { threshold: 0.5 },
-          );
-          obs.observe(el);
-        });
-      }
-
       // ─── ROUTER ───
       const views = {
         home: "home-view",
@@ -3145,6 +3546,7 @@
         });
         const target = document.getElementById(views[name]);
         target.style.display = "block";
+        document.body.dataset.view = name;
         // trigger reflow then add animation
         void target.offsetWidth;
         target.classList.add("view-transition");
@@ -3160,6 +3562,10 @@
       }
 
       async function navigate(path) {
+        if (path === "/work") {
+          path = "/about";
+          history.replaceState(null, "", "/about");
+        }
         document.querySelectorAll(".nav-links a[data-link]").forEach((a) => {
           a.classList.toggle(
             "active",
@@ -3173,10 +3579,9 @@
           showView("home");
           loadBlogPreview();
           initReveals();
-          animateCounters();
           return;
         }
-        if (path === "/work") {
+        if (path === "/about") {
           showView("work");
           renderWorkPage();
           return;
@@ -3195,7 +3600,6 @@
         showView("home");
         loadBlogPreview();
         initReveals();
-        animateCounters();
       }
 
       // ─── BLOG ───
@@ -3244,17 +3648,73 @@
           return;
         }
         const post = await res.json();
+
+        const back = post.parentPost
+          ? `<a class="post-back" data-link="/blog/${post.parentPost.slug}">&#x2190; Back to ${post.parentPost.title}</a>`
+          : `<a class="post-back" data-link="/blog">&#x2190; Back to blog</a>`;
+
+        const series =
+          post.children && post.children.length
+            ? `
+    <div class="post-series">
+      <div class="post-series-heading">In this series</div>
+      <ol class="post-series-list">${post.children
+        .map(
+          (c) => `
+        <li>
+          <a class="post-series-item" data-link="/blog/${c.slug}">
+            <span class="post-series-title">${c.title}</span>
+            ${c.description ? `<span class="post-series-desc">${c.description}</span>` : ""}
+            <span class="post-series-date">${formatDate(c.date)}</span>
+          </a>
+        </li>`,
+        )
+        .join("")}
+      </ol>
+    </div>`
+            : "";
+
+        const pager =
+          post.prev || post.next
+            ? `
+    <nav class="post-pager">
+      ${post.prev ? `<a class="post-pager-link prev" data-link="/blog/${post.prev.slug}"><span class="post-pager-label">&#x2190; Previous</span><span>${post.prev.title}</span></a>` : `<span></span>`}
+      ${post.next ? `<a class="post-pager-link next" data-link="/blog/${post.next.slug}"><span class="post-pager-label">Next &#x2192;</span><span>${post.next.title}</span></a>` : `<span></span>`}
+    </nav>`
+            : "";
+
         document.getElementById("post-container").innerHTML = `
-    <a class="post-back" data-link="/blog">&#x2190; Back to blog</a>
-    <div class="post-meta">${formatDate(post.date)}</div>
+    ${back}
+    <div class="post-meta">${formatDate(post.date)}${post.updated ? ` &middot; Updated ${formatDate(post.updated)}` : ""} &middot; ${Math.max(1, Math.round(post.html.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length / 230))} min read${post.part !== null && post.part !== undefined ? ` &middot; Part ${post.part}` : ""}</div>
     <h1 class="post-title">${post.title}</h1>
     <div class="post-tags">${post.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
-    <div class="post-content">${post.html}</div>`;
+    <div class="post-content">${post.html}</div>
+    ${series}
+    ${pager}`;
       }
 
       // ─── LINK HANDLING ───
       document.addEventListener("click", (e) => {
-        const link = e.target.closest("[data-link]");
+        let link = e.target.closest("[data-link]");
+        // Also intercept plain internal links inside rendered markdown
+        // (e.g. [Paper](/blog/kitchen-sink/foo)) so they route in-app.
+        if (!link) {
+          const a = e.target.closest("a[href]");
+          if (
+            a &&
+            a.getAttribute("href").startsWith("/") &&
+            !a.getAttribute("href").startsWith("//") &&
+            !a.hasAttribute("download") &&
+            a.target !== "_blank" &&
+            !e.metaKey && !e.ctrlKey && !e.shiftKey
+          ) {
+            const href = a.getAttribute("href");
+            if (/^\/(blog|work)?(\/|$)/.test(href)) {
+              link = a;
+              a.setAttribute("data-link", href);
+            }
+          }
+        }
         if (!link) return;
         e.preventDefault();
         const path = link.getAttribute("data-link");
@@ -3268,7 +3728,10 @@
         const row = e.target.closest(".proc-row");
         if (!row) return;
         if (e.target.closest("a")) return;
-        row.classList.toggle("expanded");
+        const opening = !row.classList.contains("expanded");
+        const table = row.closest(".proc-table");
+        if (opening && table) table.querySelectorAll(".proc-row.expanded").forEach((r) => r.classList.remove("expanded"));
+        row.classList.toggle("expanded", opening);
       });
 
       // ─── SPRITE ANIMATION: 2fps + RANDOM 2-5s GAPS ───
@@ -3364,6 +3827,7 @@
           commvault: "tag-commvault",
           uwmadison: "tag-uwmadison",
           nexplay: "tag-nexplay",
+          aws: "tag-aws",
           project: "tag-warm",
         };
         let html = "";
@@ -3377,30 +3841,30 @@
             const sc = p.status === "running" ? "running" : "done";
             html += '<div class="proc-row" data-accent="' + p.accent + '">';
             html += '<span class="proc-pid">' + p.pid + "</span>";
-            html += '<span class="proc-name">' + p.id + "</span>";
+            html += '<span class="proc-name"><span class="proc-caret">&#9656;</span>' + p.id + "</span>";
             html += '<span class="proc-org">' + p.role + "</span>";
             html += '<span class="proc-time">' + p.time + "</span>";
             html +=
               '<span class="proc-status ' + sc + '">' + p.status + "</span>";
             html += "</div>";
             const tc = tagClass[p.accent] || "tag-warm";
-            html += '<div class="proc-detail"><div class="proc-detail-inner">';
+            const meta = [p.org, p.role, p.time].filter(Boolean).join(" &middot; ");
+            html += '<div class="proc-detail"><div class="proc-detail-inner"><div class="detail-body">';
+            html += '<div class="detail-cmd"><span>$</span> cat ~/' + g.dir + "/" + p.id + "</div>";
+            html += '<div class="detail-head">';
             if (p.logo)
-              html +=
-                '<div class="detail-logo"><img src="' +
-                p.logo +
-                '" alt="' +
-                p.org +
-                '"></div>';
+              html += '<div class="detail-logo"><img src="' + p.logo + '" alt="' + p.org + '"></div>';
+            html += '<div><div class="detail-title">' + p.title + '</div><div class="detail-meta">' + meta + "</div></div>";
+            html += "</div>";
             html += '<div class="detail-summary">' + p.summary + "</div>";
-            html += '<div class="detail-impact">' + p.impact + "</div>";
+            html += '<div class="detail-impact"><span class="detail-arrow">&rarr;</span> ' + p.impact + "</div>";
             html +=
               '<div class="detail-tags">' +
               p.tags
                 .map((t) => '<span class="tag ' + tc + '">' + t + "</span>")
                 .join("") +
               "</div>";
-            html += "</div></div>";
+            html += "</div></div></div>";
           });
           html += "</div></div>";
         });
@@ -3679,8 +4143,8 @@
               "  Systems engineer, Builder, penguin enthusiast.",
               "  UW-Madison '26 \u2014 CS, Math, Business",
               "",
-              "  Currently: SWE Intern @ Commvault, Research @ UW-Madison",
-              "  Previously: ML Intern, Founding Eng, OS Peer Mentor",
+              "  Currently: SDE @ AWS ElastiCache, Seattle",
+              "  Previously: SWE @ Commvault, Honors Thesis @ UW-Madison, OS/AI Course Asst",
               "",
               '  <span class="hl-key">LinkedIn:</span>  linkedin.com/in/dhruv1116',
               '  <span class="hl-key">GitHub:</span>    github.com/1611Dhruv',
@@ -3890,6 +4354,10 @@
         function closeTerminal() {
           isOpen = false;
           overlay.classList.remove("active");
+          // the hidden prompt keeps focus otherwise, which blocks the ` shortcut
+          if (document.activeElement && overlay.contains(document.activeElement)) {
+            document.activeElement.blur();
+          }
         }
 
         closeBtn.addEventListener("click", closeTerminal);
@@ -3902,7 +4370,7 @@
             return;
           }
           if (
-            (e.key === "i" || e.key === "I") &&
+            (e.key === "`" || e.key === "~") &&
             !isOpen &&
             !e.ctrlKey &&
             !e.metaKey &&
@@ -3918,6 +4386,7 @@
           const input = body.querySelector(".iterm-input");
           if (input) input.focus();
         });
+        window._openTerminal = openTerminal;
       })();
 
       // ═══════════════════════════════════════════════════════
@@ -3955,9 +4424,28 @@
         "Are you the strongest because you're Gojo?",
       ];
 
+      // Put the bubble right above the penguin, with its tail on his head,
+      // and keep the whole bubble on screen.
+      function placeBubble() {
+        const box = bubble.offsetParent;
+        if (!box) return;
+        const vr = box.getBoundingClientRect();
+        const pr = penguin.getBoundingClientRect();
+        const bw = bubble.offsetWidth;
+        const headX = pr.left + pr.width * 0.5 - vr.left;
+        const minLeft = 8 - vr.left;
+        const maxLeft = window.innerWidth - 8 - vr.left - bw;
+        const left = Math.max(minLeft, Math.min(maxLeft, headX - bw / 2));
+        bubble.style.left = left + "px";
+        bubble.style.bottom = vr.bottom - pr.top + 12 + "px";
+        const tail = Math.max(10, Math.min(bw - 22, headX - left - 6));
+        bubble.style.setProperty("--tail-x", tail + "px");
+      }
+
       function showBubble(text) {
         clearTimeout(bubbleTimeout);
         bubble.textContent = text;
+        placeBubble();
         bubble.classList.add("show");
         bubbleTimeout = setTimeout(() => bubble.classList.remove("show"), 3000);
       }
@@ -3982,7 +4470,6 @@
             penguin.classList.remove("excited");
             counter.classList.remove("milestone");
           }, 1500);
-          showToast("&#x1F427;", "Getting warmer!", "Keep clicking...");
         } else if (clickCount === 10) {
           counter.classList.add("milestone");
           penguin.classList.add("spin");
@@ -3992,28 +4479,21 @@
           }, 600);
           // Hatch baby penguin!
           baby.classList.add("hatched");
-          showToast(
-            "&#x1F423;",
-            "Egg hatched!",
-            "You unlocked a baby penguin!",
-          );
           showBubble("You hatched my baby! :D");
         } else if (clickCount === 20) {
           penguin.classList.add("flip");
           setTimeout(() => penguin.classList.remove("flip"), 800);
-          showToast(
-            "&#x1F3C6;",
-            "Penguin Whisperer",
-            "Achievement unlocked: 20 clicks!",
-          );
           showBubble("Okay you're obsessed. I love it.");
         } else if (clickCount === 50) {
           triggerPenguinParty();
-          showToast(
-            "&#x1F389;",
-            "PENGUIN PARTY!",
-            "You found the secret party mode!",
-          );
+          // Start the count over so every milestone can be found again.
+          clickCount = 0;
+          setTimeout(() => {
+            if (clickCount === 0) {
+              counter.classList.remove("show");
+              baby.classList.remove("hatched");
+            }
+          }, 2500);
         }
       });
 
@@ -4032,6 +4512,7 @@
       resetIdle();
 
       // ─── TOAST NOTIFICATION ───
+      // Toasts are for things you type (sudo, konami, disco...), not for clicks.
       function showToast(icon, title, text) {
         const t = document.getElementById("toast");
         document.getElementById("toast-icon").innerHTML = icon;
@@ -4054,19 +4535,19 @@
         "b",
         "a",
       ];
-      let konamiIndex = 0;
+      let konamiKeys = [];
 
       document.addEventListener("keydown", (e) => {
         // Konami
-        if (e.key === konamiSequence[konamiIndex]) {
-          konamiIndex++;
-          if (konamiIndex === konamiSequence.length) {
-            konamiIndex = 0;
-            triggerPenguinParty();
-            showToast("&#x1F3AE;", "KONAMI CODE!", "You know the classics!");
-          }
-        } else {
-          konamiIndex = 0;
+        // compare the last ten keys, so stray presses before it don't matter
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        const isModifier = ["Shift", "Control", "Alt", "Meta", "CapsLock"].includes(key);
+        if (!isModifier) konamiKeys.push(key);
+        if (konamiKeys.length > konamiSequence.length) konamiKeys.shift();
+        if (konamiKeys.join(",") === konamiSequence.join(",")) {
+          konamiKeys = [];
+          triggerPenguinParty();
+          showToast("&#x1F3AE;", "KONAMI CODE!", "You know the classics!");
         }
 
         // Secret word detection
@@ -4091,7 +4572,7 @@
             showToast(
               "&#x1F4BB;",
               "Permission denied",
-              "Nice try. This penguin has root access only.",
+              "Only the penguin has root access here.",
             );
             secretBuffer = "";
           }
@@ -4125,11 +4606,6 @@
       function triggerDiscoMode() {
         if (discoActive) return;
         discoActive = true;
-        showToast(
-          "&#x1FA69;",
-          "DISCO MODE!",
-          'Type "disco" again when it ends to replay!',
-        );
 
         const overlay = document.getElementById("disco-overlay");
         const ball = document.getElementById("disco-ball");
@@ -4166,7 +4642,6 @@
       function triggerMatrixMode() {
         if (matrixActive) return;
         matrixActive = true;
-        showToast("&#x1F9EA;", "MATRIX MODE", "Entering the penguin matrix...");
 
         const canvas = document.getElementById("matrix-canvas");
         const ctx = canvas.getContext("2d");
@@ -4179,13 +4654,28 @@
         const columns = Math.floor(canvas.width / fontSize);
         const drops = Array(columns).fill(1);
 
+        // Once it is time to end, columns stop restarting at the top, so the
+        // rain trickles out column by column while the backdrop dissolves.
+        let draining = false;
+        let drainFrames = 0;
+        const retired = Array(columns).fill(false);
+
         const interval = setInterval(() => {
-          ctx.fillStyle = "rgba(11, 18, 34, 0.08)";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#7ec8e3";
+          if (!draining) {
+            ctx.fillStyle = "rgba(11, 18, 34, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          } else {
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = "source-over";
+          }
           ctx.font = fontSize + "px JetBrains Mono, monospace";
 
+          let live = 0;
           for (let i = 0; i < drops.length; i++) {
+            if (retired[i]) continue;
+            live++;
             const text = chars[Math.floor(Math.random() * chars.length)];
             ctx.fillStyle =
               Math.random() > 0.95
@@ -4194,175 +4684,85 @@
                   ? "#7ec8e3"
                   : "#3d8aa6";
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-              drops[i] = 0;
+            if (drops[i] * fontSize > canvas.height) {
+              if (draining) retired[i] = true;
+              else if (Math.random() > 0.975) drops[i] = 0;
+            }
             drops[i]++;
+          }
+
+          if (draining && live === 0 && ++drainFrames > 45) {
+            clearInterval(interval);
+            canvas.classList.remove("active");
+            setTimeout(() => {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              matrixActive = false;
+            }, 500);
           }
         }, 50);
 
         setTimeout(() => {
-          clearInterval(interval);
-          canvas.classList.remove("active");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          matrixActive = false;
-        }, 8000);
+          draining = true;
+        }, 7000);
       }
 
       // ─── HOLLOW PURPLE (Gojo Satoru) ───
+      // Everything is drawn on one canvas: Blue pulls, Red pushes, they
+      // collide into Purple, and Purple erases a strip of the page.
       let hpActive = false;
 
-      function spawnHpParticles(count, duration) {
-        const colors = [
-          "#9333ea",
-          "#d946ef",
-          "#7c3aed",
-          "#a855f7",
-          "#c084fc",
-          "#818cf8",
-          "#60a5fa",
-          "#f87171",
-          "#e9d5ff",
-        ];
-        const id = setInterval(() => {
-          for (let i = 0; i < count; i++) {
-            const p = document.createElement("div");
-            p.classList.add("hp-particle");
-            p.style.left = 15 + Math.random() * 70 + "vw";
-            p.style.top = 10 + Math.random() * 80 + "vh";
-            p.style.background =
-              colors[Math.floor(Math.random() * colors.length)];
-            const size = 2 + Math.random() * 7;
-            p.style.width = size + "px";
-            p.style.height = size + "px";
-            p.style.setProperty("--dx", (Math.random() - 0.5) * 300 + "px");
-            p.style.setProperty("--dy", (Math.random() - 0.5) * 300 + "px");
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 2000);
-          }
-        }, 60);
-        setTimeout(() => clearInterval(id), duration);
-        return id;
+      const HP_TL = {
+        dark: 0, gojo: 700, blue: 1300, red: 3200, converge: 6000,
+        merge: 8800, explode: 8800, retreat: 9900, fire: 10800, exit: 13400,
+        open: 13500, panel: 13500, heal: 17200, end: 18700,
+      };
+      const HP_BLUE = ["#1d4ed8", "#3b82f6", "#60a5fa", "#93c5fd", "#dbeafe"];
+      const HP_RED = ["#b91c1c", "#ef4444", "#f87171", "#fca5a5", "#fee2e2"];
+      const HP_PURPLE = ["#6d28d9", "#9333ea", "#a855f7", "#c084fc", "#e9d5ff", "#f5d0fe"];
+
+      const hpClamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+      const hpSmooth = (a, b, t) => { const x = hpClamp((t - a) / (b - a)); return x * x * (3 - 2 * x); };
+      const hpPick = (arr) => arr[(Math.random() * arr.length) | 0];
+
+      const hpGlowCache = {};
+      function hpGlow(color) {
+        if (hpGlowCache[color]) return hpGlowCache[color];
+        const s = document.createElement("canvas");
+        s.width = s.height = 64;
+        const g = s.getContext("2d");
+        const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gr.addColorStop(0, "rgba(255,255,255,0.95)");
+        gr.addColorStop(0.18, color);
+        gr.addColorStop(0.5, color + "55");
+        gr.addColorStop(1, "rgba(0,0,0,0)");
+        g.fillStyle = gr;
+        g.fillRect(0, 0, 64, 64);
+        return (hpGlowCache[color] = s);
       }
 
-      function hpShockwave(count) {
-        const n = count || 3;
-        const ringColors = [
-          "rgba(147, 51, 234, 0.6)",
-          "rgba(96, 165, 250, 0.4)",
-          "rgba(220, 38, 38, 0.4)",
-          "rgba(217, 70, 239, 0.5)",
-          "rgba(192, 132, 252, 0.35)",
-        ];
-        for (let i = 0; i < n; i++) {
-          setTimeout(() => {
-            const ring = document.createElement("div");
-            ring.classList.add("hp-ring");
-            ring.style.borderColor = ringColors[i % ringColors.length];
-            document.getElementById("hp-overlay").appendChild(ring);
-            setTimeout(() => ring.remove(), 1200);
-          }, i * 150);
-        }
+      const hpTintCache = {};
+      function hpTint(color) {
+        if (hpTintCache[color]) return hpTintCache[color];
+        const s = document.createElement("canvas");
+        s.width = s.height = 64;
+        const g = s.getContext("2d");
+        const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gr.addColorStop(0, color + "e6");
+        gr.addColorStop(0.5, color + "66");
+        gr.addColorStop(1, color + "00");
+        g.fillStyle = gr;
+        g.fillRect(0, 0, 64, 64);
+        return (hpTintCache[color] = s);
       }
 
-      function spawnOrbTrails(duration) {
-        const orbBlue = document.getElementById("hp-orb-blue");
-        const orbRed = document.getElementById("hp-orb-red");
-        const blueColors = [
-          "rgba(37, 99, 235, 0.5)",
-          "rgba(96, 165, 250, 0.4)",
-          "rgba(59, 130, 246, 0.35)",
-          "rgba(147, 197, 253, 0.3)",
-          "rgba(37, 99, 235, 0.25)",
-          "rgba(191, 219, 254, 0.2)",
-        ];
-        const redColors = [
-          "rgba(220, 38, 38, 0.5)",
-          "rgba(248, 113, 113, 0.4)",
-          "rgba(239, 68, 68, 0.35)",
-          "rgba(252, 165, 165, 0.3)",
-          "rgba(220, 38, 38, 0.25)",
-          "rgba(254, 202, 202, 0.2)",
-        ];
-        const id = setInterval(() => {
-          const bRect = orbBlue.getBoundingClientRect();
-          const rRect = orbRed.getBoundingClientRect();
-          // Blue trails
-          for (let i = 0; i < 3; i++) {
-            const t = document.createElement("div");
-            t.classList.add("hp-trail");
-            const bx = bRect.left + bRect.width / 2;
-            const by = bRect.top + bRect.height / 2;
-            t.style.left = bx + (Math.random() - 0.5) * 50 + "px";
-            t.style.top = by + (Math.random() - 0.5) * 50 + "px";
-            const size = 10 + Math.random() * 35;
-            t.style.width = size + "px";
-            t.style.height = size + "px";
-            t.style.background =
-              blueColors[Math.floor(Math.random() * blueColors.length)];
-            t.style.boxShadow =
-              "0 0 " +
-              size * 0.8 +
-              "px " +
-              size * 0.4 +
-              "px rgba(37, 99, 235, 0.2)";
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 1800);
-          }
-          // Red trails
-          for (let i = 0; i < 3; i++) {
-            const t = document.createElement("div");
-            t.classList.add("hp-trail");
-            const rx = rRect.left + rRect.width / 2;
-            const ry = rRect.top + rRect.height / 2;
-            t.style.left = rx + (Math.random() - 0.5) * 50 + "px";
-            t.style.top = ry + (Math.random() - 0.5) * 50 + "px";
-            const size = 10 + Math.random() * 35;
-            t.style.width = size + "px";
-            t.style.height = size + "px";
-            t.style.background =
-              redColors[Math.floor(Math.random() * redColors.length)];
-            t.style.boxShadow =
-              "0 0 " +
-              size * 0.8 +
-              "px " +
-              size * 0.4 +
-              "px rgba(220, 38, 38, 0.2)";
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 1800);
-          }
-          // Occasional purple blend trail in the middle
-          if (Math.random() > 0.5) {
-            const t = document.createElement("div");
-            t.classList.add("hp-trail");
-            const mx =
-              (bRect.left + bRect.width / 2 + rRect.left + rRect.width / 2) / 2;
-            const my =
-              (bRect.top + bRect.height / 2 + rRect.top + rRect.height / 2) / 2;
-            t.style.left = mx + (Math.random() - 0.5) * 80 + "px";
-            t.style.top = my + (Math.random() - 0.5) * 80 + "px";
-            const size = 15 + Math.random() * 40;
-            t.style.width = size + "px";
-            t.style.height = size + "px";
-            const purpleColors = [
-              "rgba(147, 51, 234, 0.3)",
-              "rgba(192, 132, 252, 0.25)",
-              "rgba(217, 70, 239, 0.2)",
-              "rgba(168, 85, 247, 0.3)",
-            ];
-            t.style.background =
-              purpleColors[Math.floor(Math.random() * purpleColors.length)];
-            t.style.boxShadow =
-              "0 0 " +
-              size * 0.7 +
-              "px " +
-              size * 0.35 +
-              "px rgba(147, 51, 234, 0.15)";
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 1800);
-          }
-        }, 45);
-        setTimeout(() => clearInterval(id), duration);
-        return id;
+      function hpCard(cap, glow, xPct) {
+        const card = document.getElementById("hp-card");
+        card.classList.remove("show");
+        if (!cap) return;
+        document.getElementById("hp-card-cap").textContent = cap;
+        card.style.setProperty("--hp-glow", glow);
+        card.style.left = xPct + "%";
+        requestAnimationFrame(() => card.classList.add("show"));
       }
 
       function startGojoRoaming() {
@@ -4392,18 +4792,27 @@
             if (app.side === "left") {
               gojo.style.left = "20px";
               gojo.style.animation = "gojoEnterLeft 6.5s ease-in-out forwards";
-              bub.style.left = "130px";
-              bub.style.bottom = parseInt(app.bottom) + 8 + "%";
             } else {
               gojo.style.right = "20px";
               gojo.style.animation = "gojoEnterRight 6.5s ease-in-out forwards";
-              bub.style.right = "130px";
-              bub.style.bottom = parseInt(app.bottom) + 8 + "%";
             }
 
             document.body.appendChild(gojo);
             document.body.appendChild(bub);
-            setTimeout(() => bub.classList.add("show"), 1500);
+            // once he has walked in, put the bubble beside his face,
+            // on the side facing into the screen
+            setTimeout(() => {
+              const g = gojo.getBoundingClientRect();
+              const room = app.side === "left" ? window.innerWidth - g.right - 24 : g.left - 24;
+              bub.style.maxWidth = Math.min(260, room) + "px";
+              const faceY = g.top + g.height * 0.32;
+              const top = Math.max(8, Math.min(window.innerHeight - 8 - bub.offsetHeight, faceY - 18));
+              bub.style.top = top + "px";
+              if (app.side === "left") bub.style.left = g.right + 10 + "px";
+              else bub.style.right = window.innerWidth - g.left + 10 + "px";
+              bub.style.setProperty("--tail-y", Math.max(8, faceY - top - 5) + "px");
+              bub.classList.add("show");
+            }, 1500);
             setTimeout(() => bub.classList.remove("show"), 4800);
             setTimeout(() => {
               gojo.remove();
@@ -4413,164 +4822,728 @@
         });
       }
 
-      function triggerHollowPurple() {
+      // If the visitor's device asks for reduced motion, check before playing.
+      // Choosing "Play it" is remembered for the rest of the visit.
+      function hpMotionOk() {
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
+        try { return sessionStorage.getItem("hpMotionOk") === "1"; } catch { return false; }
+      }
+      function showHpWarning() {
+        if (document.querySelector(".hp-warn")) return;
+        const wrap = document.createElement("div");
+        wrap.className = "hp-warn";
+        wrap.setAttribute("role", "dialog");
+        wrap.setAttribute("aria-modal", "true");
+        wrap.setAttribute("aria-labelledby", "hp-warn-title");
+        wrap.innerHTML = `
+          <div class="hp-warn-card">
+            <div class="hp-warn-title" id="hp-warn-title">Heads up</div>
+            <div class="hp-warn-text">Hollow Purple has flashing lights and screen shake, and your device is set to reduce motion.</div>
+            <div class="hp-warn-actions">
+              <button type="button" data-hp="skip">Skip</button>
+              <button type="button" class="primary" data-hp="play">Play it</button>
+            </div>
+          </div>`;
+        document.body.appendChild(wrap);
+        requestAnimationFrame(() => wrap.classList.add("show"));
+        const close = () => {
+          document.removeEventListener("keydown", onKey, true);
+          wrap.classList.remove("show");
+          setTimeout(() => wrap.remove(), 200);
+        };
+        const play = () => {
+          try { sessionStorage.setItem("hpMotionOk", "1"); } catch {}
+          close();
+          setTimeout(() => triggerHollowPurple(true), 220);
+        };
+        const onKey = (e) => {
+          if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(); }
+          else if (e.key === "Enter" && !e.target.closest?.("button")) { e.preventDefault(); play(); }
+        };
+        document.addEventListener("keydown", onKey, true);
+        wrap.addEventListener("click", (e) => {
+          const b = e.target.closest("button");
+          if (b) (b.dataset.hp === "play" ? play : close)();
+          else if (e.target === wrap) close();
+        });
+        wrap.querySelector('[data-hp="play"]').focus();
+      }
+
+      function triggerHollowPurple(confirmed) {
         if (hpActive) return;
+        if (!confirmed && !hpMotionOk()) {
+          showHpWarning();
+          return;
+        }
         hpActive = true;
 
-        const $ = (id) => document.getElementById(id);
-        const overlay = $("hp-overlay");
-        const gojo = $("hp-gojo");
-        const orbBlue = $("hp-orb-blue");
-        const orbRed = $("hp-orb-red");
-        const core = $("hp-core");
-        const beam = $("hp-beam");
-        const flash = $("hp-flash");
-        const thought = $("hp-thought");
-        const ambients = [1, 2, 3, 4, 5].map((i) => $("hp-amb-" + i));
-        const erings = [1, 2, 3].map((i) => $("hp-ering-" + i));
+        const overlay = document.getElementById("hp-overlay");
+        const gojo = document.getElementById("hp-gojo");
+        const thought = document.getElementById("hp-thought");
+        const app = document.getElementById("app");
+        const cv = document.getElementById("hp-canvas");
+        const ctx = cv.getContext("2d");
 
-        // ─ Phase 0: Screen goes dark with cinematic vignette (0ms)
-        overlay.classList.add("phase-dark", "active");
+        let W = 0, H = 0;
+        function resize() {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          W = window.innerWidth;
+          H = window.innerHeight;
+          cv.width = W * dpr;
+          cv.height = H * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resize();
+        window.addEventListener("resize", resize);
 
-        // ─ Phase 1: Ambient circles + Gojo rises (800ms)
-        setTimeout(() => {
-          ambients.forEach((a) => a.classList.add("show"));
-          gojo.classList.add("enter");
-        }, 800);
+        overlay.style.transition = "opacity 0.6s ease";
+        overlay.style.background = "rgba(1, 0, 4, 0.985)";
+        overlay.classList.add("active");
+        const later = (ms, fn) => setTimeout(fn, ms);
+        later(HP_TL.gojo, () => gojo.classList.add("enter"));
 
-        // ─ Phase 2: Power up — orbs + energy rings + bg shift (2200ms)
-        setTimeout(() => {
-          overlay.classList.add("phase-power");
-          gojo.classList.add("power");
-          orbBlue.classList.add("grow");
-          orbRed.classList.add("grow");
-          erings.forEach((r) => r.classList.add("show"));
-          spawnHpParticles(3, 5000);
-        }, 2200);
-
-        // ─ Phase 3: Orbs converge slowly, leaving glowing trails (3600ms)
-        setTimeout(() => {
-          orbBlue.classList.add("converge");
-          orbRed.classList.add("converge");
-          gojo.classList.add("ascend");
-          erings.forEach((r) => r.classList.add("ascend"));
-          overlay.classList.add("phase-merge");
-          // Spawn glowing trail circles as orbs drift toward center
-          spawnOrbTrails(2800);
-        }, 3600);
-
-        // ─ Phase 4: MERGE — trails vanish, core explodes + flash + shockwaves (6500ms)
-        setTimeout(() => {
-          // Kill remaining trails instantly
-          document.querySelectorAll(".hp-trail").forEach((t) => t.remove());
-
-          orbBlue.style.transition = "opacity 0.15s";
-          orbRed.style.transition = "opacity 0.15s";
-          orbBlue.style.opacity = "0";
-          orbRed.style.opacity = "0";
-          core.classList.add("form");
-
-          // Bright purple-tinted flash
-          flash.style.transition = "opacity 0.08s";
-          flash.style.opacity = "0.9";
-          setTimeout(() => {
-            flash.style.transition = "opacity 0.6s";
-            flash.style.opacity = "0";
-          }, 140);
-
-          // Big multi-colored shockwaves
-          hpShockwave(6);
-
-          // Screen shake
-          document.getElementById("app").classList.add("hp-shaking");
-          setTimeout(
-            () => document.getElementById("app").classList.remove("hp-shaking"),
-            600,
-          );
-
-          // Massive particle burst — wild colors
-          spawnHpParticles(8, 2500);
-        }, 6500);
-
-        // ─ Phase 5: BEAM fires (7300ms)
-        setTimeout(() => {
-          beam.classList.add("fire");
-          setTimeout(() => beam.classList.add("expand"), 200);
-
-          flash.style.transition = "opacity 0.08s";
-          flash.style.opacity = "0.5";
-          setTimeout(() => {
-            flash.style.transition = "opacity 0.6s";
-            flash.style.opacity = "0";
-          }, 100);
-
-          hpShockwave(5);
-          spawnHpParticles(6, 2000);
-
-          document.getElementById("app").classList.add("hp-shaking");
-          setTimeout(
-            () => document.getElementById("app").classList.remove("hp-shaking"),
-            600,
-          );
-        }, 7300);
-
-        // ─ Phase 6: Everything settles — Gojo speaks (8800ms)
-        setTimeout(() => {
-          core.style.transition = "opacity 0.6s";
-          core.style.opacity = "0";
-          beam.style.transition = "opacity 0.8s";
-          beam.style.opacity = "0";
-          erings.forEach((r) => {
-            r.style.transition = "opacity 0.5s";
-            r.style.opacity = "0";
-          });
-
-          // Move gojo to speaking position
-          gojo.classList.remove("ascend");
-          gojo.classList.add("speak");
-
-          // Show thought bubble after gojo lands
-          setTimeout(() => thought.classList.add("show"), 500);
-        }, 8800);
-
-        // ─ Phase 7: Hold, then fade out + start roaming (12500ms)
-        setTimeout(() => {
-          overlay.classList.remove("phase-dark", "phase-power", "phase-merge");
-          overlay.classList.add("phase-out");
+        function finish() {
+          window.removeEventListener("resize", resize);
           overlay.classList.remove("active");
-
-          // Reset after fade
-          setTimeout(() => {
-            overlay.classList.remove("phase-out");
+          later(700, () => {
+            ctx.clearRect(0, 0, W, H);
+            overlay.style.background = "";
+            overlay.style.transition = "";
+            overlay.style.transform = "";
             gojo.classList.remove("enter", "power", "ascend", "speak");
-            orbBlue.classList.remove("grow", "converge");
-            orbRed.classList.remove("grow", "converge");
-            orbBlue.style.opacity = "";
-            orbRed.style.opacity = "";
-            orbBlue.style.transition = "";
-            orbRed.style.transition = "";
-            document.querySelectorAll(".hp-trail").forEach((t) => t.remove());
-            core.classList.remove("form");
-            core.style.transition = "";
-            core.style.opacity = "";
-            beam.classList.remove("fire", "expand");
-            beam.style.transition = "";
-            beam.style.opacity = "";
-            flash.style.opacity = "";
-            flash.style.transition = "";
             thought.classList.remove("show");
-            ambients.forEach((a) => a.classList.remove("show"));
-            erings.forEach((r) => {
-              r.classList.remove("show", "ascend");
-              r.style.transition = "";
-              r.style.opacity = "";
-            });
+            hpCard(null);
             hpActive = false;
-
-            // Gojo sticks around and pokes at the UI!
             startGojoRoaming();
-          }, 1400);
-        }, 12500);
+          });
+        }
+
+        // The visitor typed the secret word, so the full attack always plays,
+        // even when the OS asks for reduced motion.
+
+        const scale = Math.min(W, H) / 900;
+        const parts = [];
+        const rings = [];
+        const stars = Array.from({ length: 900 }, () => ({
+          x: Math.random(), y: Math.random() * 2 - 1, r: Math.random() * 1.4 + 0.3, tw: Math.random() * 6,
+        }));
+        let flash = 0;
+        // ── Purple's route: a jagged, electrified zig-zag that sweeps across
+        // the panel row by row, so the cut itself uncovers Gojo
+        const voidCv = document.createElement("canvas");
+        voidCv.width = W;
+        voidCv.height = H;
+        const vctx = voidCv.getContext("2d");
+        // rims + void are flattened here first, so fading them out is clean
+        const dmgCv = document.createElement("canvas");
+        dmgCv.width = W;
+        dmgCv.height = H;
+        const dctx = dmgCv.getContext("2d");
+        const cy0 = H * 0.42;
+        const manga = new Image();
+        manga.src = "/img/hp/nah-id-win.jpg";
+        const mangaH = H * 0.94;
+        const mangaW = mangaH * (639 / 744);
+        const mangaX = (W - mangaW) / 2;
+        const mangaY = (H - mangaH) / 2;
+        const ROWS = 5;
+        const rowH = mangaH / ROWS;
+
+        // midpoint displacement: a straight segment becomes a lightning bolt
+        function bolt(a, b, rough, depth, out) {
+          if (depth === 0) { out.push(b); return; }
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const len = Math.hypot(dx, dy) || 1;
+          const off = (Math.random() - 0.5) * 2 * rough * len;
+          const mid = { x: (a.x + b.x) / 2 - (dy / len) * off, y: (a.y + b.y) / 2 + (dx / len) * off };
+          bolt(a, mid, rough, depth - 1, out);
+          bolt(mid, b, rough, depth - 1, out);
+        }
+        const trail = [{ x: W * 0.1, y: cy0 }];
+        (function buildTrail() {
+          const pad = 30 * scale;
+          const way = [];
+          const jit = (k) => (Math.random() - 0.5) * 2 * k;
+          for (let r = 0; r < ROWS; r++) {
+            const y = mangaY + rowH * (r + 0.5);
+            const tilt = jit(rowH * 0.22);
+            const L = { x: mangaX - pad - Math.random() * 70 * scale, y: y - tilt + jit(rowH * 0.12) };
+            const R = { x: mangaX + mangaW + pad + Math.random() * 70 * scale, y: y + tilt + jit(rowH * 0.12) };
+            const m1 = { x: mangaX + mangaW * (0.3 + jit(0.08)), y: y + jit(rowH * 0.28) };
+            const m2 = { x: mangaX + mangaW * (0.66 + jit(0.08)), y: y + jit(rowH * 0.28) };
+            way.push(...(r % 2 ? [R, m2, m1, L] : [L, m1, m2, R]));
+          }
+          way.push({ x: W * 1.1 + 200 * scale, y: mangaY + mangaH * (0.3 + Math.random() * 0.4) });
+          let prev = trail[0];
+          for (const w of way) {
+            bolt(prev, w, 0.09, 3, trail);
+            prev = w;
+          }
+        })();
+        // a torn, angular edge: every vertex pushed in or out by its own amount
+        const edgeL = trail.map(() => 0.7 + Math.random() * 0.6);
+        const edgeR = trail.map(() => 0.7 + Math.random() * 0.6);
+        const nrm = trail.map((_, i) => {
+          const a = trail[Math.max(0, i - 1)], b = trail[Math.min(trail.length - 1, i + 1)];
+          const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+          return { x: -(b.y - a.y) / len, y: (b.x - a.x) / len };
+        });
+        const trailLen = [0];
+        for (let i = 1; i < trail.length; i++) {
+          trailLen.push(trailLen[i - 1] + Math.hypot(trail[i].x - trail[i - 1].x, trail[i].y - trail[i - 1].y));
+        }
+        let trailIdx = 0;
+
+        // collateral damage: forked cracks and punched-out holes
+        const cracks = [];
+        const shards = [];
+        let lastCrack = 0, lastShard = 0;
+        function addCrack(x, y) {
+          const pts = [{ x, y }];
+          let a = Math.random() * Math.PI * 2;
+          const n = 5 + ((Math.random() * 7) | 0);
+          for (let i = 0; i < n; i++) {
+            a += (Math.random() - 0.5) * 1.2;
+            const step = (18 + Math.random() * 30) * scale;
+            const last = pts[pts.length - 1];
+            pts.push({ x: last.x + Math.cos(a) * step, y: last.y + Math.sin(a) * step });
+          }
+          cracks.push({ pts, w: (4 + Math.random() * 9) * scale });
+        }
+        function addShard(x, y) {
+          const n = 6 + ((Math.random() * 4) | 0), r = (14 + Math.random() * 40) * scale;
+          const pts = [];
+          for (let i = 0; i < n; i++) {
+            const a = (i / n) * Math.PI * 2 + Math.random() * 0.4;
+            const rr = r * (0.45 + Math.random() * 0.75);
+            pts.push({ x: x + Math.cos(a) * rr, y: y + Math.sin(a) * rr });
+          }
+          shards.push({ pts, x, y });
+        }
+        // fill the carved route as a chain of quads; neighbours share an edge,
+        // so there are no gaps, and each quad is filled on its own so
+        // overlapping sweeps never cancel out
+        const fillTrail = (c, half, grow) => {
+          const edge = (i, side) => {
+            const k = side > 0 ? edgeL[i] : edgeR[i];
+            const d = side * (half * k + grow);
+            return [trail[i].x + nrm[i].x * d, trail[i].y + nrm[i].y * d];
+          };
+          c.strokeStyle = c.fillStyle;
+          c.lineWidth = 1.5;
+          for (let i = 0; i < trailIdx; i++) {
+            const a = edge(i, 1), b = edge(i + 1, 1), cc = edge(i + 1, -1), d = edge(i, -1);
+            c.beginPath();
+            c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.lineTo(cc[0], cc[1]); c.lineTo(d[0], d[1]);
+            c.closePath();
+            c.fill();
+            c.stroke();
+          }
+        };
+        const tracePoly = (c, pts, close) => {
+          c.beginPath();
+          c.moveTo(pts[0].x, pts[0].y);
+          for (let i = 1; i < pts.length; i++) c.lineTo(pts[i].x, pts[i].y);
+          if (close) c.closePath();
+        };
+        let healK = 1;
+        // Hollow Purple is a vortex of particles: positions are in orb units,
+        // inner particles spin faster and glow paler
+        const vortex = Array.from({ length: 900 }, () => {
+          const rho = Math.sqrt(Math.random());
+          return {
+            th: Math.random() * Math.PI * 2, rho,
+            w: 0.006 + 0.03 * (1 - rho) + Math.random() * 0.006,
+            s: 0.9 + Math.random() * 1.7, tw: Math.random() * 6,
+          };
+        });
+        // debris whipped around inside it
+        const debris = Array.from({ length: 28 }, () => {
+          const n = 4 + ((Math.random() * 3) | 0);
+          const pts = Array.from({ length: n }, (_, i) => ({
+            a: (i / n) * Math.PI * 2 + Math.random() * 0.5, d: 0.5 + Math.random() * 0.6,
+          }));
+          return {
+            th: Math.random() * Math.PI * 2, rho: 0.3 + Math.random() * 1.0,
+            w: 0.01 + Math.random() * 0.02, spin: (Math.random() - 0.5) * 0.15, rot: Math.random() * 6,
+            size: 0.035 + Math.random() * 0.06, pts,
+            color: Math.random() < 0.3 ? "#9a3412" : Math.random() < 0.5 ? "#2e1065" : "#1e0b36",
+          };
+        });
+        let prevSphere = null;
+        let lastRedBurst = 0;
+        let sphere = null;
+        let bandHalf = 0;
+        const t0 = performance.now();
+        let last = t0;
+
+        function spawn(x, y, vx, vy, color, size, life) {
+          if (parts.length > 2600) return;
+          parts.push({ x, y, vx, vy, color, size, life, max: life, pull: null });
+        }
+
+        later(HP_TL.converge, () => gojo.classList.add("power"));
+        later(HP_TL.merge, () => gojo.classList.remove("enter", "power", "ascend"));
+        // penguin Gojo ducks out; the real one gets the line
+
+        new Image().src = "/img/hp/nah-id-win.jpg";
+
+        later(HP_TL.end, finish);
+
+        function frame(now) {
+          const t = now - t0;
+          const dt = Math.min(3, (now - last) / 16.67);
+          last = now;
+          if (t > HP_TL.end + 200) return;
+
+          const cx = W / 2;
+          const cy = H * 0.42;
+          const sBlue = hpSmooth(HP_TL.blue, HP_TL.blue + 1300, t) * (t < HP_TL.merge ? 1 : 0);
+          const sRed = hpSmooth(HP_TL.red, HP_TL.red + 900, t) * (t < HP_TL.merge ? 1 : 0);
+
+          // orb positions: home spots, then a tightening spiral into the centre
+          const c = hpClamp((t - HP_TL.converge) / (HP_TL.merge - HP_TL.converge));
+          const spin = 11 * c * c;
+          const R = W * 0.23 * (1 - Math.pow(c, 1.5));
+          const blue = { x: cx + R * Math.cos(Math.PI + spin), y: cy + R * 0.5 * Math.sin(Math.PI + spin) };
+          const red = { x: cx + R * Math.cos(spin), y: cy + R * 0.5 * Math.sin(spin) };
+
+          // ── overlay tone: dark while charging, gone once Purple fires
+          if (t >= HP_TL.fire - 120) overlay.style.background = "rgba(1, 0, 4, 0)";
+          else if (t >= HP_TL.merge && t < HP_TL.explode + 150) overlay.style.background = "rgba(0, 0, 2, 0.995)";
+          else if (t >= HP_TL.converge) overlay.style.background = `rgba(${1 + 5 * c | 0}, 0, ${4 + 12 * c | 0}, 0.985)`;
+
+          // ── shake: rising through the convergence, a kick on merge and fire
+          let shake = 0;
+          if (t > HP_TL.merge - 1300 && t < HP_TL.merge) shake = 7 * hpSmooth(HP_TL.merge - 1300, HP_TL.merge, t);
+          if (t >= HP_TL.merge && t < HP_TL.explode) shake = 3 + 9 * hpSmooth(HP_TL.merge, HP_TL.explode, t);
+          if (t >= HP_TL.explode && t < HP_TL.explode + 650) shake = 16 * (1 - (t - HP_TL.explode) / 650);
+          if (t >= HP_TL.fire && t < HP_TL.exit) shake = 9;
+          const sx = (Math.random() - 0.5) * shake * scale;
+          const sy = (Math.random() - 0.5) * shake * scale;
+          overlay.style.transform = shake ? `translate(${sx}px, ${sy}px)` : "";
+          app.style.transform = t >= HP_TL.fire && t < HP_TL.exit ? `translate(${sx}px, ${sy}px)` : "";
+
+          // ── Blue: particles spiral inward
+          if (sBlue > 0) {
+            for (let i = 0; i < 14 * sBlue * dt; i++) {
+              const a = Math.random() * Math.PI * 2;
+              const d = (140 + Math.random() * 280) * scale;
+              const p = { x: blue.x + Math.cos(a) * d, y: blue.y + Math.sin(a) * d };
+              spawn(p.x, p.y, -Math.sin(a) * 2.2, Math.cos(a) * 2.2, hpPick(HP_BLUE), 1.5 + Math.random() * 3.5, 140);
+              parts[parts.length - 1].pull = "blue";
+            }
+          }
+          // ── Red: steady spray plus periodic bursts outward
+          if (sRed > 0) {
+            for (let i = 0; i < 7 * sRed * dt; i++) {
+              const a = Math.random() * Math.PI * 2, v = (2.5 + Math.random() * 6) * scale;
+              spawn(red.x, red.y, Math.cos(a) * v, Math.sin(a) * v, hpPick(HP_RED), 1.5 + Math.random() * 3, 60 + Math.random() * 30);
+            }
+            if (t - lastRedBurst > 700) {
+              lastRedBurst = t;
+              for (let i = 0; i < 90 * sRed; i++) {
+                const a = Math.random() * Math.PI * 2, v = (7 + Math.random() * 11) * scale;
+                spawn(red.x, red.y, Math.cos(a) * v, Math.sin(a) * v, hpPick(HP_RED), 2 + Math.random() * 3, 45);
+              }
+              rings.push({ x: red.x, y: red.y, r: 20 * scale, v: 9 * scale, a: 0.5, color: "#f87171" });
+            }
+          }
+
+          // ── COLLISION: Blue and Red crush into a single compressed point
+          if (t >= HP_TL.merge && !sphere) {
+            sphere = { x: cx, y: cy, r: 0, exploded: false };
+            flash = 0.12;
+            for (const p of parts) { p.pull = "sphere"; p.life = Math.max(p.life, 60); p.max = Math.max(p.max, p.life); }
+          }
+          // compression: everything is dragged into the point, rings collapse inward
+          if (sphere && !sphere.exploded && t < HP_TL.explode) {
+            const k = hpSmooth(HP_TL.merge, HP_TL.explode, t);
+            for (let i = 0; i < (4 + 10 * k) * dt; i++) {
+              const a = Math.random() * Math.PI * 2, d = Math.max(W, H) * (0.45 + Math.random() * 0.3);
+              spawn(cx + Math.cos(a) * d, cy + Math.sin(a) * d, -Math.sin(a) * 3 * scale, Math.cos(a) * 3 * scale, hpPick(HP_PURPLE.concat(HP_BLUE[2], HP_RED[2])), 1.5 + Math.random() * 3, 160);
+              parts[parts.length - 1].pull = "sphere";
+            }
+            if (t - (sphere.lastRing || 0) > 240) {
+              sphere.lastRing = t;
+              rings.push({ x: cx, y: cy, r: Math.max(W, H) * 0.6, v: -(16 + 10 * k) * scale, a: 0.35 + 0.3 * k, color: hpPick(["#a855f7", "#c084fc", "#e9d5ff"]) });
+            }
+          }
+          // ── DETONATION: the point explodes into Hollow Purple
+          if (sphere && !sphere.exploded && t >= HP_TL.explode) {
+            sphere.exploded = true;
+            flash = 0.4;
+            for (let i = 0; i < 560; i++) {
+              const a = Math.random() * Math.PI * 2, v = (5 + Math.random() * 22) * scale;
+              spawn(cx, cy, Math.cos(a) * v, Math.sin(a) * v, hpPick(HP_PURPLE), 2 + Math.random() * 4, 50 + Math.random() * 40);
+            }
+            for (const p of parts) if (p.pull === "sphere") { p.pull = null; const a = Math.atan2(p.y - cy, p.x - cx); p.vx = Math.cos(a) * 14 * scale; p.vy = Math.sin(a) * 14 * scale; }
+            for (let i = 0; i < 6; i++) {
+              rings.push({ x: cx, y: cy, r: (10 + i * 25) * scale, v: (16 + i * 3) * scale, a: 0.75, color: hpPick(["#a855f7", "#60a5fa", "#ef4444", "#e9d5ff"]) });
+            }
+          }
+
+          // ── Purple sphere: grows, pulls back, then fires across the page
+          if (sphere) {
+            const rMax = Math.min(W, H) * 0.11;
+            if (!sphere.exploded) {
+              sphere.r = rMax * 0.07 * (1 + 0.3 * Math.sin(t / 25));
+            } else {
+              const g = hpSmooth(HP_TL.explode, HP_TL.explode + 380, t);
+              sphere.r = rMax * (0.07 + 0.93 * g) * (1 + 0.2 * Math.sin(Math.PI * g));
+            }
+            if (t >= HP_TL.retreat && t < HP_TL.fire) {
+              const k = hpSmooth(HP_TL.retreat, HP_TL.fire, t);
+              sphere.x = cx + (W * 0.1 - cx) * k;
+              sphere.r *= 1 - 0.18 * k;
+            } else if (t >= HP_TL.fire) {
+              const k = hpClamp((t - HP_TL.fire) / (HP_TL.exit - HP_TL.fire));
+              const e = k * k * (3 - 2 * k);
+              const target = e * trailLen[trailLen.length - 1];
+              while (trailIdx < trail.length - 1 && trailLen[trailIdx + 1] <= target) trailIdx++;
+              sphere.x = trail[trailIdx].x;
+              sphere.y = trail[trailIdx].y;
+              sphere.r = rMax * 0.82;
+              bandHalf = rowH * 0.82;
+              if (k < 1 && t - lastCrack > 90) {
+                lastCrack = t;
+                addCrack(sphere.x, sphere.y);
+              }
+              if (k < 1 && t - lastShard > 160) {
+                lastShard = t;
+                addShard(Math.random() * W, Math.random() * H);
+              }
+              // debris thrown off the carved edges
+              if (k < 1) {
+                for (let i = 0; i < 7 * dt; i++) {
+                  const a = Math.random() * Math.PI * 2;
+                  spawn(sphere.x + Math.cos(a) * bandHalf, sphere.y + Math.sin(a) * bandHalf, Math.cos(a) * (1 + Math.random() * 3), Math.sin(a) * (1 + Math.random() * 3), hpPick(HP_PURPLE), 1.5 + Math.random() * 2.5, 50);
+                }
+              }
+            }
+            // charge swirl around the sphere until it leaves
+            if (t < HP_TL.exit) {
+              for (let i = 0; i < 6 * dt; i++) {
+                const a = Math.random() * Math.PI * 2, d = sphere.r * (1.5 + Math.random() * 0.9);
+                spawn(sphere.x + Math.cos(a) * d, sphere.y + Math.sin(a) * d, -Math.sin(a) * 4 * scale, Math.cos(a) * 4 * scale, hpPick(HP_PURPLE), 1.5 + Math.random() * 2.5, 36);
+                parts[parts.length - 1].pull = "sphere";
+              }
+            }
+          }
+          // everything carved seals back up at the end
+          healK = t >= HP_TL.heal ? 1 - hpSmooth(HP_TL.heal, HP_TL.heal + 1100, t) : 1;
+
+          // ── draw ──────────────────────────────────────────────
+          ctx.clearRect(0, 0, W, H);
+
+          // what Purple destroyed: the route, forked cracks, punched-out holes
+          if (sphere && trailIdx > 0 && healK > 0.01) {
+            const shrink = 0.6 + 0.4 * healK;
+            const half = bandHalf * shrink;
+            const flick = 0.75 + Math.random() * 0.25;
+            dctx.clearRect(0, 0, W, H);
+            const drawCuts = (c, extra, fill) => {
+              c.lineCap = "butt";
+              c.lineJoin = "miter";
+              fillTrail(c, half, extra / 2);
+              for (const cr of cracks) {
+                c.lineWidth = cr.w * shrink + extra;
+                tracePoly(c, cr.pts, false); c.stroke();
+              }
+              for (const sh of shards) {
+                c.save();
+                c.translate(sh.x, sh.y);
+                c.scale(shrink, shrink);
+                c.translate(-sh.x, -sh.y);
+                tracePoly(c, sh.pts, true);
+                if (fill) c.fill();
+                if (extra) { c.lineWidth = extra; c.stroke(); }
+                c.restore();
+              }
+            };
+            // electric rim
+            dctx.strokeStyle = `rgba(139, 92, 246, ${0.25 * flick})`;
+            dctx.fillStyle = dctx.strokeStyle;
+            drawCuts(dctx, 30, true);
+            dctx.strokeStyle = `rgba(221, 214, 254, ${0.95 * flick})`;
+            dctx.fillStyle = dctx.strokeStyle;
+            drawCuts(dctx, 6, true);
+            // the hole itself
+            vctx.globalCompositeOperation = "source-over";
+            vctx.clearRect(0, 0, W, H);
+            vctx.strokeStyle = vctx.fillStyle = "#020008";
+            drawCuts(vctx, 0, true);
+            vctx.globalCompositeOperation = "source-atop";
+            vctx.fillStyle = "#e9d5ff";
+            for (const s of stars) {
+              vctx.globalAlpha = 0.35 + 0.65 * Math.abs(Math.sin(s.tw + t / 400));
+              vctx.fillRect(s.x * W, (s.y * 0.5 + 0.5) * H, s.r, s.r);
+            }
+            vctx.globalAlpha = 1;
+            if (manga.complete && manga.naturalWidth) {
+              vctx.drawImage(manga, mangaX, mangaY, mangaW, mangaH);
+              vctx.strokeStyle = "#0a0a0a";
+              vctx.lineWidth = 5;
+              vctx.strokeRect(mangaX, mangaY, mangaW, mangaH);
+            }
+            dctx.drawImage(voidCv, 0, 0);
+            ctx.globalAlpha = healK;
+            ctx.drawImage(dmgCv, 0, 0, W, H);
+            ctx.globalAlpha = 1;
+
+            // live lightning: around the sphere while it carves, then sporadic
+            // sparks along the damage until it heals
+            ctx.globalCompositeOperation = "lighter";
+            const zap = (from, len, n) => {
+              for (let b = 0; b < n; b++) {
+                const a = Math.random() * Math.PI * 2;
+                const to = { x: from.x + Math.cos(a) * len * (0.5 + Math.random()), y: from.y + Math.sin(a) * len * (0.5 + Math.random()) };
+                const pts = [from];
+                bolt(from, to, 0.25, 4, pts);
+                ctx.strokeStyle = Math.random() < 0.5 ? "rgba(255, 255, 255, 0.85)" : "rgba(196, 181, 253, 0.85)";
+                ctx.lineWidth = 1 + Math.random() * 1.8;
+                tracePoly(ctx, pts, false); ctx.stroke();
+              }
+            };
+            if (t < HP_TL.exit) zap({ x: sphere.x, y: sphere.y }, sphere.r * 2.4, 4);
+            else if (healK > 0.9 && Math.random() < 0.35) {
+              const src = Math.random() < 0.5 && cracks.length
+                ? hpPick(cracks).pts[0]
+                : trail[(Math.random() * trail.length) | 0];
+              zap(src, 70 * scale, 2);
+            }
+            ctx.globalCompositeOperation = "source-over";
+          }
+
+          ctx.globalCompositeOperation = "lighter";
+
+          // colour washes: Blue floods the left side, Red the right
+          if (sBlue > 0 || sRed > 0) {
+            const side = ctx.createLinearGradient(0, 0, W, 0);
+            side.addColorStop(0, `rgba(29, 78, 216, ${0.3 * sBlue})`);
+            side.addColorStop(0.45, `rgba(29, 78, 216, ${0.05 * sBlue})`);
+            side.addColorStop(0.55, `rgba(185, 28, 28, ${0.05 * sRed})`);
+            side.addColorStop(1, `rgba(185, 28, 28, ${0.3 * sRed})`);
+            ctx.fillStyle = side;
+            ctx.fillRect(0, 0, W, H);
+            const nebula = (o, s, rgb) => {
+              if (s <= 0) return;
+              const R = Math.max(W, H) * 0.38;
+              const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, R);
+              g.addColorStop(0, `rgba(${rgb}, ${0.5 * s})`);
+              g.addColorStop(0.25, `rgba(${rgb}, ${0.2 * s})`);
+              g.addColorStop(1, `rgba(${rgb}, 0)`);
+              ctx.fillStyle = g;
+              ctx.fillRect(o.x - R, o.y - R, R * 2, R * 2);
+            };
+            nebula(blue, sBlue, "37, 99, 235");
+            nebula(red, sRed, "220, 38, 38");
+          }
+
+          // particles
+          for (let i = parts.length - 1; i >= 0; i--) {
+            const p = parts[i];
+            if (p.pull) {
+              const target = p.pull === "blue" ? blue : sphere;
+              if (target) {
+                const dx = target.x - p.x, dy = target.y - p.y;
+                const d = Math.hypot(dx, dy) || 1;
+                const f = (p.pull === "blue" ? 0.9 : 0.6) * scale;
+                p.vx = p.vx * 0.94 + (dx / d) * f * dt;
+                p.vy = p.vy * 0.94 + (dy / d) * f * dt;
+                if (d < 8 * scale) p.life = 0;
+              }
+            } else {
+              p.vx *= 0.985;
+              p.vy *= 0.985;
+            }
+            p.x += p.vx * dt;
+            p.y += p.vy * dt;
+            p.life -= dt;
+            if (p.life <= 0) { parts.splice(i, 1); continue; }
+            const k = p.life / p.max;
+            const s = p.size * 4 * (0.4 + 0.6 * k) * scale;
+            ctx.globalAlpha = Math.min(p.pull === "sphere" ? 0.6 : 0.8, k * 1.1);
+            ctx.drawImage(hpGlow(p.color), p.x - s / 2, p.y - s / 2, s, s);
+          }
+          ctx.globalAlpha = 1;
+
+          // orbs
+          const orb = (o, strength, colors, pulse) => {
+            if (strength <= 0) return;
+            const r = (32 + pulse) * strength * scale;
+            ctx.globalAlpha = 0.6;
+            ctx.drawImage(hpGlow(colors[0]), o.x - r * 7, o.y - r * 7, r * 14, r * 14);
+            ctx.globalAlpha = 0.85;
+            ctx.drawImage(hpGlow(colors[1]), o.x - r * 4, o.y - r * 4, r * 8, r * 8);
+            ctx.globalAlpha = 1;
+            const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, r);
+            g.addColorStop(0, "#fff");
+            g.addColorStop(0.45, colors[3]);
+            g.addColorStop(1, colors[0] + "00");
+            ctx.fillStyle = g;
+            ctx.beginPath(); ctx.arc(o.x, o.y, r, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = colors[2] + "99";
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 3; i++) {
+              const a0 = t / (260 - i * 50) + i * 2;
+              ctx.beginPath(); ctx.arc(o.x, o.y, r * (1.5 + i * 0.25), a0, a0 + 1.6); ctx.stroke();
+            }
+          };
+          orb(blue, sBlue, HP_BLUE, 3 * Math.sin(t / 120));
+          orb(red, sRed, HP_RED, 6 * Math.max(0, 1 - (t - lastRedBurst) / 220));
+
+          // purple sphere: lit body, fused Blue/Red swirling inside, white-hot
+          // core, flaring corona and crackling surface
+          if (sphere && sphere.x < W + sphere.r * 6 && sphere.r > 0.5) {
+            const r = sphere.r, x = sphere.x, y = sphere.y;
+
+            // comet wake: a purple streak behind it while it flies
+            if (prevSphere && t >= HP_TL.fire && t < HP_TL.exit) {
+              const dx = x - prevSphere.x, dy = y - prevSphere.y, sp = Math.hypot(dx, dy);
+              if (sp > 0.5) {
+                const ux = dx / sp, uy = dy / sp, len = r * 4.5;
+                const g = ctx.createLinearGradient(x, y, x - ux * len, y - uy * len);
+                g.addColorStop(0, "rgba(216, 180, 254, 0.55)");
+                g.addColorStop(0.4, "rgba(147, 51, 234, 0.25)");
+                g.addColorStop(1, "rgba(88, 28, 135, 0)");
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.moveTo(x - uy * r * 0.9, y + ux * r * 0.9);
+                ctx.lineTo(x - ux * len, y - uy * len);
+                ctx.lineTo(x + uy * r * 0.9, y - ux * r * 0.9);
+                ctx.closePath();
+                ctx.fill();
+              }
+            }
+            prevSphere = { x, y };
+
+            ctx.globalAlpha = 0.4;
+            ctx.drawImage(hpGlow("#9333ea"), x - r * 4, y - r * 4, r * 8, r * 8);
+            ctx.globalAlpha = 1;
+
+            // a faint body so the particles have some mass behind them
+            const haze = ctx.createRadialGradient(x, y, 0, x, y, r * 1.05);
+            haze.addColorStop(0, "rgba(237, 233, 254, 0.55)");
+            haze.addColorStop(0.5, "rgba(147, 51, 234, 0.28)");
+            haze.addColorStop(1, "rgba(76, 29, 149, 0)");
+            ctx.fillStyle = haze;
+            ctx.beginPath(); ctx.arc(x, y, r * 1.05, 0, Math.PI * 2); ctx.fill();
+
+            // the vortex: dense speckles, pale at the heart, violet at the edge
+            const ps = Math.max(0.7, Math.sqrt(scale));
+            for (const v of vortex) v.th += v.w * dt;
+            const bands = [[0, 0.25, "#f5f3ff"], [0.25, 0.5, "#e9d5ff"], [0.5, 0.78, "#c084fc"], [0.78, 1.01, "#8b5cf6"]];
+            // each speck is a short streak along its spin; faster ones streak longer
+            ctx.lineCap = "round";
+            for (const [lo, hi, color] of bands) {
+              ctx.strokeStyle = color;
+              for (const bright of [0, 1]) {
+                ctx.globalAlpha = bright ? 0.9 : 0.5;
+                ctx.lineWidth = (bright ? 1.6 : 1.1) * ps;
+                ctx.beginPath();
+                for (const v of vortex) {
+                  if (v.rho < lo || v.rho >= hi) continue;
+                  if ((Math.sin(t / 140 + v.tw) > 0) !== !!bright) continue;
+                  const tail = v.th - v.w * 4.5;
+                  ctx.moveTo(x + Math.cos(tail) * v.rho * r, y + Math.sin(tail) * v.rho * r * 0.96);
+                  ctx.lineTo(x + Math.cos(v.th) * v.rho * r, y + Math.sin(v.th) * v.rho * r * 0.96);
+                }
+                ctx.stroke();
+              }
+            }
+            ctx.globalAlpha = 1;
+
+            // energetic heart: always pulsing, and flaring hard right after birth
+            const age = t - HP_TL.explode;
+            const birth = age >= 0 && age < 1000 ? 1 - age / 1000 : 0;
+            const beat = 1 + 0.09 * Math.sin(t / 55);
+            const hr = r * (0.55 + 0.7 * birth) * beat;
+            ctx.globalAlpha = 0.45 + 0.4 * birth;
+            ctx.drawImage(hpTint("#c4b5fd"), x - hr * 1.7, y - hr * 1.7, hr * 3.4, hr * 3.4);
+            ctx.globalAlpha = 0.7 + 0.3 * birth;
+            ctx.drawImage(hpTint("#ede9fe"), x - hr, y - hr, hr * 2, hr * 2);
+            ctx.globalAlpha = 0.55 + 0.3 * birth;
+            ctx.drawImage(hpTint("#faf5ff"), x - hr * 0.45, y - hr * 0.45, hr * 0.9, hr * 0.9);
+            ctx.globalAlpha = 1;
+            // rays bursting out of the centre as it is born
+            if (birth > 0) {
+              ctx.lineCap = "round";
+              for (let i = 0; i < 20; i++) {
+                const a = (i / 20) * Math.PI * 2 + Math.sin(i * 3.7) * 0.2 + age / 900;
+                const len = r * (1.3 + 1.2 * birth * (0.6 + 0.4 * Math.sin(i * 5.1)));
+                ctx.strokeStyle = `rgba(233, 213, 255, ${0.5 * birth})`;
+                ctx.lineWidth = (1.5 + (i % 3)) * birth + 0.5;
+                ctx.beginPath();
+                ctx.moveTo(x + Math.cos(a) * r * 0.2, y + Math.sin(a) * r * 0.2);
+                ctx.lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len);
+                ctx.stroke();
+              }
+            }
+
+            // swirling rim: dark streaks with a few light ones, like the edge of a whirlpool
+            ctx.save();
+            ctx.globalCompositeOperation = "source-over";
+            ctx.lineCap = "round";
+            for (let i = 0; i < 14; i++) {
+              const a0 = t / (300 + (i % 4) * 60) + i * 0.9;
+              const rr = r * (0.9 + (i % 5) * 0.06);
+              ctx.strokeStyle = `rgba(30, 10, 54, ${0.35 + (i % 3) * 0.12})`;
+              ctx.lineWidth = r * (0.05 + (i % 3) * 0.025);
+              ctx.beginPath(); ctx.arc(x, y, rr, a0, a0 + 0.6 + (i % 4) * 0.25); ctx.stroke();
+            }
+            ctx.restore();
+            ctx.lineWidth = 1.2;
+            for (let i = 0; i < 6; i++) {
+              const a0 = t / (260 + i * 30) + i * 1.7;
+              ctx.strokeStyle = "rgba(233, 213, 255, 0.45)";
+              ctx.beginPath(); ctx.arc(x, y, r * (0.98 + i * 0.03), a0, a0 + 0.5); ctx.stroke();
+            }
+
+            // debris: jagged chunks tumbling round the vortex
+            ctx.save();
+            ctx.globalCompositeOperation = "source-over";
+            for (const d of debris) {
+              d.th += d.w * dt;
+              d.rot += d.spin * dt;
+              const px = x + Math.cos(d.th) * d.rho * r, py = y + Math.sin(d.th) * d.rho * r * 0.96;
+              const sz = d.size * r;
+              ctx.fillStyle = d.color;
+              ctx.beginPath();
+              d.pts.forEach((pt, i) => {
+                const qx = px + Math.cos(pt.a + d.rot) * pt.d * sz, qy = py + Math.sin(pt.a + d.rot) * pt.d * sz;
+                if (i === 0) ctx.moveTo(qx, qy); else ctx.lineTo(qx, qy);
+              });
+              ctx.closePath();
+              ctx.fill();
+            }
+            ctx.restore();
+          }
+
+          // shockwave rings
+          for (let i = rings.length - 1; i >= 0; i--) {
+            const g = rings[i];
+            g.r += g.v * dt;
+            g.a -= (g.v < 0 ? 0.003 : 0.012) * dt;
+            if (g.a <= 0 || g.r < 3) { rings.splice(i, 1); continue; }
+            ctx.globalAlpha = g.a;
+            ctx.strokeStyle = g.color;
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2); ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+          ctx.globalCompositeOperation = "source-over";
+
+          // flash on merge
+          if (flash > 0) {
+            ctx.fillStyle = `rgba(245, 230, 255, ${flash})`;
+            ctx.fillRect(0, 0, W, H);
+            flash = Math.max(0, flash - 0.03 * dt);
+          }
+
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
       }
 
       // ─── SHIFT + MOUSE = SNOWFLAKE TRAIL ───
@@ -4615,6 +5588,30 @@
             quip.textContent = quips[Math.floor(Math.random() * quips.length)];
         });
       });
+
+      // ─── "psst..." swells as it rises into view, then settles back ───
+      // Biggest when the line sits about 70% down the screen, normal again
+      // above the middle or near the bottom edge.
+      (function () {
+        const words = document.querySelectorAll(".hint-psst");
+        if (!words.length) return;
+        let queued = false;
+        function update() {
+          queued = false;
+          const vh = window.innerHeight;
+          words.forEach((w) => {
+            const r = w.getBoundingClientRect();
+            if (!r.height) return;
+            const pos = (r.top + r.height / 2) / vh;
+            const bump = Math.max(0, 1 - Math.abs(pos - 0.72) / 0.2);
+            w.style.setProperty("--psst", (1 + 0.8 * bump * bump * (3 - 2 * bump)).toFixed(3));
+          });
+        }
+        const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+        window.addEventListener("scroll", queue, { passive: true });
+        window.addEventListener("resize", queue);
+        update();
+      })();
 
       // ─── INIT ───
       navigate(location.pathname);

@@ -2,62 +2,157 @@
   "neofetch": {
     "title": "dhruv@career",
     "lines": {
-      "OS": "UW-Madison '26",
-      "Uptime": "3 internships, 1 research role, 2 startups",
-      "Shell": "C, C++, Python, C#, JavaScript",
-      "DE": "React, Next.js, Express, Django",
-      "WM": "gRPC, eBPF, ONNX, S3, xv6",
-      "Disk": "1 patent pending",
+      "OS": "UW-Madison '26 (CS & Math, 4.0)",
+      "Uptime": "AWS, Commvault, thesis, 2 startups",
+      "Shell": "C, C++, CUDA, Python, Rust, Go",
+      "DE": "PyTorch, Triton, ONNX, XGBoost",
+      "WM": "eBPF, Nsight Compute, perf, GDB",
       "Theme": "penguins [always]"
     },
-    "colors": ["#ff5f57", "#febc2e", "#28c840", "#7ec8e3", "#f4a87c", "#c44dff", "#6C3CE0", "#E7582A"]
+    "colors": [
+      "#ff5f57",
+      "#febc2e",
+      "#28c840",
+      "#7ec8e3",
+      "#f4a87c",
+      "#c44dff",
+      "#6C3CE0",
+      "#E7582A"
+    ]
   },
   "groups": [
+    {
+      "dir": "aws",
+      "cmd": "$ ls ~/aws/",
+      "processes": [
+        {
+          "id": "elasticache-data-plane",
+          "pid": "001",
+          "accent": "aws",
+          "role": "SDE (DB)",
+          "time": "Sep 2026–Now",
+          "status": "running",
+          "title": "ElastiCache Core Data-Plane Engine",
+          "org": "Amazon Web Services",
+          "logo": "/img/logos/aws.svg",
+          "summary": "Working on ElastiCache’s core data-plane engine, owning crash analysis and production deep dives. Mitigated a TLS connection storm by experimenting with and retuning the engine’s connection-queue sizing, and navigated ~400M log lines with agentic AI tooling to root-cause a security vulnerability.",
+          "impact": "Keeping a managed in-memory database stable at AWS scale by turning production crashes and incidents into root-caused fixes.",
+          "tags": [
+            "C",
+            "Databases",
+            "TLS",
+            "Crash Analysis",
+            "Production Debugging",
+            "AWS"
+          ]
+        }
+      ]
+    },
     {
       "dir": "commvault",
       "cmd": "$ ls ~/commvault/",
       "processes": [
         {
-          "id": "dist-systems-storage",
-          "pid": "001",
+          "id": "rust-service-rewrite",
+          "pid": "002",
           "accent": "commvault",
-          "role": "SWE Intern",
-          "time": "Sep 2025\u2013Now",
-          "status": "running",
-          "title": "Distributed Systems & Storage",
+          "role": "SWE",
+          "time": "–Sep 2026",
+          "status": "done",
+          "title": "Legacy Service Rewrite in Rust",
           "org": "Commvault",
           "logo": "/img/logos/commvault.png",
-          "summary": "Designing gRPC-based multi-node communication for Commvault\u2019s S3 Vault to enable horizontal scaling. Implementing request routing, inter-node messaging, and caching mechanisms to reduce redundant calls and distribute load for GET requests and multipart uploads.",
-          "impact": "Enabling horizontal scaling for S3-compatible storage, improving throughput and resilience while reducing load on critical backup pipelines.",
-          "tags": ["C#", "gRPC", "Distributed Systems", "S3", "Caching", "Horizontal Scaling"]
+          "summary": "Rewrote a legacy service in Rust using an autonomous agentic pipeline, and validated the rewrite by shadowing production traffic before cutover.",
+          "impact": "Cut per-request latency from ~30s to 700ms and build times from ~8h to 1.5h, saving ~$1,700/yr in licensing.",
+          "tags": [
+            "Rust",
+            "Agentic AI",
+            "Shadow Traffic",
+            "Performance",
+            "Build Systems"
+          ]
+        },
+        {
+          "id": "udv-s3-storage",
+          "pid": "003",
+          "accent": "commvault",
+          "role": "SWE",
+          "time": "–Sep 2026",
+          "status": "done",
+          "title": "UDV — S3-Compatible Storage Interface",
+          "org": "Commvault",
+          "logo": "/img/logos/commvault.png",
+          "summary": "Co-owned UDV, Commvault’s S3-compatible storage interface, end to end, resolving operational pains and bugs. Earlier designed gRPC-based multi-node communication for horizontal scaling, with request routing, inter-node messaging, and caching for GET requests and multipart uploads.",
+          "impact": "Made S3-compatible storage scale horizontally and run more reliably for critical backup pipelines.",
+          "tags": [
+            "C#",
+            "gRPC",
+            "Distributed Systems",
+            "S3",
+            "Caching",
+            "Ownership"
+          ]
+        },
+        {
+          "id": "monday-backup-restore",
+          "pid": "004",
+          "accent": "commvault",
+          "role": "SWE",
+          "time": "–Sep 2026",
+          "status": "done",
+          "title": "Monday.com Backup & Restore",
+          "org": "Commvault",
+          "logo": "/img/logos/commvault.png",
+          "summary": "Built backup and restore for the Monday.com platform on Commvault infrastructure, using an agentic AI coding assistant.",
+          "impact": "Extended Commvault’s data protection to a new SaaS platform.",
+          "tags": [
+            "Backup & Restore",
+            "SaaS",
+            "Agentic AI",
+            "Integrations"
+          ]
         },
         {
           "id": "build-systems-observability",
-          "pid": "002",
+          "pid": "005",
           "accent": "commvault",
           "role": "SWE Intern",
-          "time": "Sep 2025\u2013Now",
-          "status": "running",
+          "time": "2025",
+          "status": "done",
           "title": "Build Systems & Observability",
           "org": "Commvault",
           "logo": "/img/logos/commvault.png",
-          "summary": "Owning maintenance and feature development for Bindep, an internal C++ dependency analysis tool. Building health-check endpoints for observability, integrating AI-based log analysis and crash detection, and shipping frontend improvements across a 400K-line React codebase.",
-          "impact": "Improving reliability of a critical build tool with AI-driven crash analytics, reducing manual log inspection and accelerating issue resolution.",
-          "tags": ["C++", "React", "Observability", "AI Log Analysis", "Developer Tooling"]
+          "summary": "Owned maintenance and feature development for Bindep, an internal C++ dependency analysis tool. Built health-check endpoints for observability, integrated AI-based log analysis and crash detection, and shipped frontend improvements across a 400K-line React codebase.",
+          "impact": "Resolved 20+ critical incidents through server log analysis and root-cause remediation, keeping a critical build tool reliable.",
+          "tags": [
+            "C++",
+            "React",
+            "Observability",
+            "AI Log Analysis",
+            "Developer Tooling"
+          ]
         },
         {
           "id": "cipher-algorithm-detection",
-          "pid": "003",
+          "pid": "006",
           "accent": "commvault",
           "role": "ML Intern",
-          "time": "May\u2013Aug 2025",
+          "time": "May–Aug 2025",
           "status": "done",
           "title": "Cipher Algorithm Detection",
           "org": "Commvault",
           "logo": "/img/logos/commvault.png",
           "summary": "Designed an end-to-end cipher detection pipeline with NIST-inspired feature engineering on raw ciphertext. Ran 40+ experiments across XGBoost, LightGBM, CNNs, Transformers, and BERT-style models. Productionized via a C++ feature extractor with ONNX inference achieving ~270ms per file.",
-          "impact": "Delivered a production ML system for cipher detection meeting strict latency constraints. The technology is being patented by Commvault, with credit as a named patent holder.",
-          "tags": ["Python", "C++", "ML", "XGBoost", "Transformers", "ONNX", "Cryptography"]
+          "impact": "Delivered a production ML system for cipher detection (80% accuracy, 0.79 F1) meeting strict latency constraints.",
+          "tags": [
+            "Python",
+            "C++",
+            "ML",
+            "XGBoost",
+            "Transformers",
+            "ONNX",
+            "Cryptography"
+          ]
         }
       ]
     },
@@ -67,31 +162,45 @@
       "processes": [
         {
           "id": "kernel-policy-optimization",
-          "pid": "004",
+          "pid": "007",
           "accent": "uwmadison",
-          "role": "Research Asst",
-          "time": "Jan 2025\u2013Now",
-          "status": "running",
-          "title": "LLM-Guided Linux Kernel Policy Optimization",
+          "role": "Honors Thesis",
+          "time": "Jan 25–May 26",
+          "status": "done",
+          "title": "MemEvolve — LLM-Evolved Linux Page-Cache Policies",
           "org": "UW-Madison",
           "logo": "/img/logos/uw-madison.png",
-          "summary": "Researching LLM-assisted generation and optimization of Linux kernel-space policies targeting Page Cache behavior. Using eBPF for fine-grained runtime signals and the OpenEvolve framework for controlled policy execution. Benchmarking across YCSB, DuckDB, and Twitter production traces.",
-          "impact": "Demonstrating that LLM-generated kernel policies can match or outperform existing techniques like ScaleCache under specific workloads, without compromising stability.",
-          "tags": ["Linux Kernel", "eBPF", "LLMs", "Page Cache", "Systems Research", "OpenEvolve"]
+          "summary": "Honors thesis advised by Prof. Michael Swift. Used LLMs to evolve Linux page-cache eviction policies as eBPF, deployed live in a custom cache_ext 6.6.8 kernel via eBPF struct_ops with no rebuild or simulator. Built a breadth-first evolutionary search (planner, mutator, frontier reviewer) driven by kernel-probe feedback, and a distributed evaluator across CloudLab nodes that isolates each candidate in a cgroup.",
+          "impact": "18% higher throughput on scan-based workloads, with workload-specialized policies beating cache_ext’s baselines.",
+          "tags": [
+            "Linux Kernel",
+            "eBPF",
+            "LLMs",
+            "Page Cache",
+            "CloudLab",
+            "Systems Research"
+          ]
         },
         {
           "id": "os-peer-mentor",
-          "pid": "005",
+          "pid": "008",
           "accent": "uwmadison",
-          "role": "CS 537",
-          "time": "Sep 24\u2013May 25",
+          "role": "Course Asst",
+          "time": "Sep 23–May 25",
           "status": "done",
-          "title": "Operating Systems Peer Mentor",
-          "org": "UW-Madison (CS 537)",
+          "title": "Course Assistant — OS & AI",
+          "org": "UW-Madison",
           "logo": "/img/logos/uw-madison.png",
-          "summary": "Resolved 550+ student help tickets debugging C codebases across kernel and user space. Supported xv6 kernel projects (copy-on-write, virtual memory, concurrency) and systems assignments (distributed processing, RAID, Unix shells). Authored a GDB debugging guide adopted by TAs.",
-          "impact": "Handled peak queues of 15\u201320 students and ~120 tickets/day. Created lasting instructional assets reused across semesters.",
-          "tags": ["C", "xv6", "GDB", "OS", "Concurrency", "Mentorship"]
+          "summary": "Taught systems programming in C: pointers, manual memory management, and concurrency for OS kernel projects. Led 10–15 student system design sessions on copy-on-write, huge pages, RAID, lock-free buffers, and cache coherence, and authored a GDB guide for debugging concurrent kernel-space C.",
+          "impact": "Mentored 600+ students, resolving 98% of implementation issues. The GDB guide was adopted by TAs for 2 semesters.",
+          "tags": [
+            "C",
+            "xv6",
+            "GDB",
+            "OS",
+            "Concurrency",
+            "Mentorship"
+          ]
         }
       ]
     },
@@ -101,31 +210,45 @@
       "processes": [
         {
           "id": "fullstack-fantasy-app",
-          "pid": "006",
+          "pid": "009",
           "accent": "nexplay",
           "role": "SWE Intern",
-          "time": "May\u2013Aug 2024",
+          "time": "May–Aug 2024",
           "status": "done",
           "title": "Full-Stack Fantasy App",
           "org": "NexPlay Games",
           "logo": "/img/logos/nextplay.png",
           "summary": "Built core Express.js backend services from scratch for a real-time baseball fantasy app. Implemented caching and memoized APIs, translated Figma designs into responsive React interfaces, and improved Git workflows and codebase maintainability.",
           "impact": "Reduced API calls per page from 400+ to ~30, significantly improving performance and scalability in a fast-paced startup environment.",
-          "tags": ["Express.js", "React", "Node.js", "REST APIs", "Caching", "Real-Time"]
+          "tags": [
+            "Express.js",
+            "React",
+            "Node.js",
+            "REST APIs",
+            "Caching",
+            "Real-Time"
+          ]
         },
         {
           "id": "smartmigrate-legal-agent",
-          "pid": "007",
+          "pid": "010",
           "accent": "project",
           "role": "Founding Eng",
           "time": "Apr 2025",
           "status": "done",
-          "title": "SmartMigrate \u2014 LLM-Powered Asylum Form Filling Agent",
+          "title": "SmartMigrate — LLM-Powered Asylum Form Filling Agent",
           "org": "SmartMigrate",
           "logo": null,
           "summary": "Co-founded an LLM-powered legal-tech agent to guide asylum seekers through Form I-589 with context-aware questioning, input validation, and structured output. Built a Next.js frontend and Django backend for LLM orchestration and form data management.",
           "impact": "Showed potential to save 50+ attorney hours per case. Won Best Prototype award and successfully pitched to investors.",
-          "tags": ["Next.js", "Django", "LLMs", "Legal Tech", "Startup", "Social Impact"]
+          "tags": [
+            "Next.js",
+            "Django",
+            "LLMs",
+            "Legal Tech",
+            "Startup",
+            "Social Impact"
+          ]
         }
       ]
     },
@@ -134,18 +257,66 @@
       "cmd": "$ ls ~/projects/",
       "processes": [
         {
+          "id": "mytorch",
+          "pid": "011",
+          "accent": "project",
+          "role": "Solo",
+          "time": "Present",
+          "status": "running",
+          "title": "MyTorch — Deep Learning Framework from Scratch",
+          "org": "Personal",
+          "logo": null,
+          "summary": "The entire deep-learning stack in C++/CUDA with zero ML dependencies: strided N-d tensors with zero-copy views and broadcasting, a CPU/CUDA dispatch layer, reverse-mode autograd checked against finite differences, nn modules, and a FlashAttention kernel with online softmax and SRAM tiling. Trains a Llama-3.1-style transformer and a UNet diffusion model end to end.",
+          "impact": "Drove SGEMM from 7.5 to ~63 TFLOP/s (~80% of cuBLAS) on an RTX 5090 in 7 Nsight-guided optimization stages. See the <a data-link=\"/blog/mytorch-gallery\">MyTorch Gallery</a>.",
+          "tags": [
+            "C++",
+            "CUDA",
+            "Autograd",
+            "FlashAttention",
+            "GPU Kernels",
+            "Diffusion"
+          ]
+        },
+        {
+          "id": "primitivedb",
+          "pid": "012",
+          "accent": "project",
+          "role": "Solo",
+          "time": "Mar 2026",
+          "status": "done",
+          "title": "PrimitiveDB — Cache-Conscious Storage & Joins",
+          "org": "Personal",
+          "logo": null,
+          "summary": "A C++ harness benchmarking PAX columnar vs row-major storage and radix vs naive hash joins, measured with perf_event_open(2).",
+          "impact": "Single-column scans 6x faster with ~14.5x fewer L1D misses; joins 2.7x faster with ~170x fewer L3 misses using a radix-partitioned hash join sized to L1/L2.",
+          "tags": [
+            "C++",
+            "Databases",
+            "PAX Storage",
+            "Cache Locality",
+            "perf"
+          ]
+        },
+        {
           "id": "office-hours-queue",
-          "pid": "008",
+          "pid": "013",
           "accent": "project",
           "role": "Lead",
-          "time": "Sep 2025\u2013Now",
+          "time": "Sep 2025–Now",
           "status": "running",
-          "title": "Office Hours Queue \u2014 LLM-Powered TA & Student Support",
+          "title": "Office Hours Queue — LLM-Powered TA & Student Support",
           "org": "UW-Madison",
           "logo": "/img/logos/uw-madison.png",
           "summary": "Led a team of five to build a full-stack queue platform replacing a fragile Google Sheets workflow. Integrated LLMs via Microsoft AI Foundry for AI-assisted Q&A, code diffing, and debugging hints. Used Flask + React (Vite) with Redis caching and Server-Sent Events for real-time updates.",
           "impact": "Reduced TA debugging time with LLM-generated diffs and summaries. Replaced a manual process with a scalable system, cutting queue backlogs.",
-          "tags": ["Flask", "React", "Redis", "SSE", "LLMs", "EdTech"]
+          "tags": [
+            "Flask",
+            "React",
+            "Redis",
+            "SSE",
+            "LLMs",
+            "EdTech"
+          ]
         }
       ]
     }
