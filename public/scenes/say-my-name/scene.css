@@ -1,0 +1,184 @@
+/* ─── SAY MY NAME (Heisenberg) ─── */
+.bb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  background: #2b1d0a;
+  transition: opacity 0.9s ease;
+}
+.bb-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.bb-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* the camera pushes in as he gets closer */
+  transform-origin: 50% 62%;
+  transform: scale(calc(1 + 0.14 * var(--k, 0)));
+  transition: transform 0.9s cubic-bezier(0.5, 0, 0.3, 1);
+}
+/* the show's sickly yellow New Mexico grade, plus a vignette */
+.bb-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 55%, transparent 45%, rgba(20, 10, 0, 0.55) 100%);
+  transition: background 1.2s ease;
+}
+.bb-overlay.tense::after {
+  background: radial-gradient(ellipse at 50% 60%, transparent 25%, rgba(10, 5, 0, 0.85) 90%);
+}
+.bb-walt {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  width: clamp(220px, 40vmin, 360px);
+  aspect-ratio: 1;
+  transform-origin: 50% 37%;
+  transform: translateX(-50vw) translateX(-100%);
+  transition: transform 2.2s cubic-bezier(0.25, 0.8, 0.3, 1);
+  z-index: 3;
+  filter: drop-shadow(0 18px 14px rgba(40, 20, 0, 0.45));
+}
+.bb-walt.enter {
+  transform: translateX(-50%);
+  animation: bbWaddle 0.45s ease-in-out 5;
+}
+/* each step closer: he lands with a bob, the camera pushes in on the
+   desert and the letterbox bars close in. --k is how close he is (0-1). */
+.bb-walt.creep {
+  transition: transform 0.7s cubic-bezier(0.5, 0, 0.3, 1);
+}
+.bb-walt.step {
+  animation: bbStep 0.7s ease-in-out;
+}
+@keyframes bbStep {
+  0% { translate: 0 0; rotate: 0deg; }
+  35% { translate: 0 -4%; rotate: -3deg; }
+  70% { translate: 0 0.6%; rotate: 1deg; }
+  100% { translate: 0 0; rotate: 0deg; }
+}
+.bb-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--k, 0) * 11vh);
+  background: #000;
+  z-index: 5;
+  transition: height 0.9s cubic-bezier(0.5, 0, 0.3, 1);
+}
+.bb-bar.top { top: 0; }
+.bb-bar.bottom { bottom: 0; }
+.bb-overlay.thud {
+  animation: bbThud 0.25s ease-out;
+}
+@keyframes bbThud {
+  0%, 100% { translate: 0 0; }
+  40% { translate: 0 3px; }
+}
+.bb-walt svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+@keyframes bbWaddle {
+  0%, 100% { rotate: 0deg; }
+  25% { rotate: -4deg; }
+  75% { rotate: 4deg; }
+}
+.bb-sub {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  z-index: 6;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.1rem, 3.2vw, 1.9rem);
+  color: #fff6c9;
+  text-shadow: 0 2px 0 #000, 0 0 12px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.bb-sub.show {
+  opacity: 1;
+}
+.bb-sub.other {
+  color: #d6e4ff;
+  font-style: italic;
+}
+.bb-sub.typing::after {
+  content: "_";
+  animation: bbBlink 1s steps(1) infinite;
+}
+@keyframes bbBlink {
+  50% { opacity: 0; }
+}
+.bb-sub.wrong {
+  animation: bbNope 0.35s ease;
+}
+@keyframes bbNope {
+  0%, 100% { translate: 0; }
+  25% { translate: -8px; }
+  75% { translate: 8px; }
+}
+/* "Walter?" He gets caught, sweats and bolts. The sweat drop only
+   shows in that moment, never on the roaming penguins. */
+.bb-sweat {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.bb-walt.shocked .bb-sweat,
+.bb-walt.shy .bb-sweat {
+  opacity: 1;
+}
+.bb-walt.shocked {
+  animation: bbShock 0.5s ease-out;
+}
+@keyframes bbShock {
+  0% { translate: 0 0; rotate: 0deg; }
+  30% { translate: 0 -14%; rotate: -6deg; }
+  55% { translate: 0 0; rotate: 5deg; }
+  75% { rotate: -3deg; }
+  100% { translate: 0 0; rotate: 0deg; }
+}
+.bb-walt.shy {
+  animation: bbShy 1.2s ease-in-out infinite;
+}
+@keyframes bbShy {
+  0%, 100% { rotate: -3deg; }
+  50% { rotate: 3deg; }
+}
+.bb-walt.flee {
+  animation:
+    bbFlee 1.5s cubic-bezier(0.5, 0, 0.9, 0.6) forwards,
+    bbWaddle 0.22s ease-in-out infinite;
+}
+@keyframes bbFlee {
+  from { translate: 0 0; }
+  to { translate: 120vw 0; }
+}
+/* cameos after the scene (shapes and motion live in scenes/core.css) */
+.bb-cameo {
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+.bb-cameo-bubble {
+  --cameo-bg: rgba(28, 18, 4, 0.94);
+  --cameo-border: rgba(250, 204, 21, 0.55);
+  --cameo-text: #fef3c7;
+  --cameo-glow: rgba(250, 204, 21, 0.15);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-walt.enter { animation: none; }
+}

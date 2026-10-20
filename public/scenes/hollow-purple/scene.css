@@ -1,0 +1,698 @@
+/* ─── HOLLOW PURPLE (Gojo) ─── */
+.hp-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+.hp-card {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  z-index: 11;
+  transform: translate(-50%, 10px) scale(0.96);
+  opacity: 0;
+  text-align: center;
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hp-card.show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+.hp-card-kanji {
+  font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 11vw, 9rem);
+  line-height: 1;
+  color: #fff;
+  text-shadow:
+    0 0 18px var(--hp-glow, #a855f7),
+    0 0 60px var(--hp-glow, #a855f7);
+}
+.hp-card-cap {
+  margin-top: 0.6rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 0 14px var(--hp-glow, #a855f7);
+}
+.hp-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at center,
+    #0d0020 0%,
+    #050010 40%,
+    #000 100%
+  );
+  overflow: hidden;
+}
+.hp-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.hp-overlay.phase-dark {
+  transition: opacity 0.8s ease-in;
+}
+.hp-overlay.phase-out {
+  transition: opacity 1.2s ease-out;
+}
+.hp-overlay.phase-power {
+  background: radial-gradient(
+    ellipse at center,
+    #1a0040 0%,
+    #0a0020 35%,
+    #050010 70%,
+    #000 100%
+  );
+  transition: background 2s ease;
+}
+.hp-overlay.phase-merge {
+  background: radial-gradient(
+    ellipse at center,
+    #2d0060 0%,
+    #15003a 30%,
+    #0a0020 60%,
+    #000 100%
+  );
+  transition: background 0.6s ease;
+}
+
+/* Blue / Red screen tinting (anime-accurate split) */
+.hp-overlay::before,
+.hp-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 55%;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+.hp-overlay::before {
+  left: 0;
+  background: radial-gradient(
+    ellipse at 20% 50%,
+    rgba(37, 99, 235, 0.35) 0%,
+    rgba(30, 64, 175, 0.2) 25%,
+    rgba(37, 99, 235, 0.08) 50%,
+    transparent 80%
+  );
+}
+.hp-overlay::after {
+  right: 0;
+  background: radial-gradient(
+    ellipse at 80% 50%,
+    rgba(220, 38, 38, 0.35) 0%,
+    rgba(185, 28, 28, 0.2) 25%,
+    rgba(220, 38, 38, 0.08) 50%,
+    transparent 80%
+  );
+}
+.hp-overlay.phase-power::before,
+.hp-overlay.phase-power::after {
+  opacity: 1;
+}
+.hp-overlay.phase-merge::before,
+.hp-overlay.phase-merge::after {
+  opacity: 0.3;
+  transition: opacity 2.5s ease;
+}
+
+/* Floating ambient circles */
+.hp-ambient {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 1;
+}
+.hp-ambient.show {
+  opacity: 1;
+}
+.hp-ambient-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: -5%;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.15) 0%,
+    transparent 70%
+  );
+  animation: hpAmbFloat1 6s ease-in-out infinite;
+}
+.hp-ambient-2 {
+  width: 250px;
+  height: 250px;
+  bottom: 15%;
+  right: -5%;
+  background: radial-gradient(
+    circle,
+    rgba(220, 38, 38, 0.15) 0%,
+    transparent 70%
+  );
+  animation: hpAmbFloat2 7s ease-in-out infinite;
+}
+.hp-ambient-3 {
+  width: 400px;
+  height: 400px;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(147, 51, 234, 0.1) 0%,
+    transparent 60%
+  );
+  animation: hpAmbFloat3 5s ease-in-out infinite;
+}
+.hp-ambient-4 {
+  width: 160px;
+  height: 160px;
+  top: 20%;
+  right: 18%;
+  background: radial-gradient(
+    circle,
+    rgba(96, 165, 250, 0.12) 0%,
+    transparent 70%
+  );
+  animation: hpAmbFloat1 8s ease-in-out infinite reverse;
+}
+.hp-ambient-5 {
+  width: 200px;
+  height: 200px;
+  bottom: 25%;
+  left: 12%;
+  background: radial-gradient(
+    circle,
+    rgba(248, 113, 113, 0.12) 0%,
+    transparent 70%
+  );
+  animation: hpAmbFloat2 6.5s ease-in-out infinite reverse;
+}
+@keyframes hpAmbFloat1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -30px) scale(1.2);
+  }
+}
+@keyframes hpAmbFloat2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-25px, 20px) scale(1.15);
+  }
+}
+@keyframes hpAmbFloat3 {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.3);
+  }
+}
+
+/* Energy rings around Gojo */
+.hp-energy-ring {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  transform: translateX(-50%) translateY(50%);
+  z-index: 9;
+  opacity: 0;
+  transition: opacity 0.8s;
+  bottom: calc(50% - 200px);
+}
+.hp-energy-ring.show {
+  opacity: 1;
+}
+.hp-energy-ring.ascend {
+  bottom: calc(50% - 160px);
+  transition:
+    opacity 0.8s,
+    bottom 0.6s ease-out;
+}
+.hp-energy-ring-1 {
+  width: 220px;
+  height: 220px;
+  border: 1.5px solid rgba(147, 51, 234, 0.3);
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.1);
+  animation: hpEnergyPulse 2s ease-in-out infinite;
+}
+.hp-energy-ring-2 {
+  width: 280px;
+  height: 280px;
+  border: 1.5px solid rgba(96, 165, 250, 0.25);
+  box-shadow: 0 0 20px rgba(96, 165, 250, 0.08);
+  animation: hpEnergyPulse 2.5s ease-in-out infinite 0.4s;
+}
+.hp-energy-ring-3 {
+  width: 340px;
+  height: 340px;
+  border: 1.5px solid rgba(220, 38, 38, 0.2);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.06);
+  animation: hpEnergyPulse 3s ease-in-out infinite 0.8s;
+}
+@keyframes hpEnergyPulse {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(50%) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(-50%) translateY(50%) scale(1.06);
+    opacity: 0.8;
+  }
+}
+
+/* Gojo Penguin entrance */
+.hp-gojo {
+  position: absolute;
+  bottom: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 180px;
+  filter: drop-shadow(0 0 30px rgba(147, 51, 234, 0.6));
+  transition:
+    bottom 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.5s;
+  z-index: 10;
+}
+.hp-gojo.enter {
+  bottom: calc(50% - 200px);
+}
+.hp-gojo.power {
+  filter: drop-shadow(0 0 60px rgba(147, 51, 234, 0.9))
+    drop-shadow(0 0 120px rgba(100, 50, 255, 0.5));
+}
+.hp-gojo.ascend {
+  bottom: calc(50% - 160px);
+  transition:
+    bottom 0.6s ease-out,
+    filter 0.5s;
+}
+.hp-gojo.speak {
+  bottom: 10%;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 0 40px rgba(147, 51, 234, 0.7));
+}
+
+/* Blue orb (left hand) */
+.hp-orb-blue {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #93c5fd 12%,
+    #60a5fa 28%,
+    #2563eb 48%,
+    #1d4ed8 65%,
+    rgba(29, 78, 216, 0.3) 80%,
+    transparent 100%
+  );
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 5;
+  overflow: hidden;
+}
+.hp-orb-blue.grow {
+  width: 220px;
+  height: 220px;
+  box-shadow:
+    0 0 40px 20px rgba(96, 165, 250, 0.7),
+    0 0 80px 40px rgba(37, 99, 235, 0.5),
+    0 0 140px 70px rgba(96, 165, 250, 0.35),
+    0 0 220px 110px rgba(37, 99, 235, 0.2),
+    0 0 320px 160px rgba(59, 130, 246, 0.1),
+    0 0 450px 220px rgba(37, 99, 235, 0.05);
+}
+.hp-orb-blue.converge {
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  transition: all 2.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Red orb (right hand) */
+.hp-orb-red {
+  position: absolute;
+  top: 50%;
+  right: 25%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #fca5a5 12%,
+    #f87171 28%,
+    #dc2626 48%,
+    #991b1b 65%,
+    rgba(153, 27, 27, 0.3) 80%,
+    transparent 100%
+  );
+  transform: translate(50%, -50%);
+  box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 5;
+  overflow: hidden;
+}
+.hp-orb-red.grow {
+  width: 220px;
+  height: 220px;
+  box-shadow:
+    0 0 40px 20px rgba(248, 113, 113, 0.7),
+    0 0 80px 40px rgba(220, 38, 38, 0.5),
+    0 0 140px 70px rgba(248, 113, 113, 0.35),
+    0 0 220px 110px rgba(220, 38, 38, 0.2),
+    0 0 320px 160px rgba(239, 68, 68, 0.1),
+    0 0 450px 220px rgba(220, 38, 38, 0.05);
+}
+.hp-orb-red.converge {
+  right: 50%;
+  width: 150px;
+  height: 150px;
+  transition: all 2.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Orb inner spinning ring */
+.hp-orb-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: hpOrbSpin 0.8s linear infinite;
+}
+.hp-orb-spin::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translateX(-50%);
+}
+@keyframes hpOrbSpin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Orb trail particles (left behind during convergence) */
+.hp-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  border-radius: 50%;
+  animation: hpTrailFade 1.8s ease-out forwards;
+}
+@keyframes hpTrailFade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 0.7;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.15);
+  }
+}
+
+/* Purple core (merge point) */
+.hp-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #f5eeff 8%,
+    #e9d5ff 15%,
+    #d946ef 28%,
+    #9333ea 45%,
+    #7c3aed 62%,
+    #581c87 78%,
+    transparent 100%
+  );
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hp-core.form {
+  width: 200px;
+  height: 200px;
+  box-shadow:
+    0 0 30px 15px rgba(217, 70, 239, 0.8),
+    0 0 60px 30px rgba(147, 51, 234, 0.6),
+    0 0 100px 50px rgba(147, 51, 234, 0.4),
+    0 0 160px 80px rgba(88, 28, 135, 0.25),
+    0 0 240px 120px rgba(88, 28, 135, 0.12),
+    0 0 340px 170px rgba(88, 28, 135, 0.06),
+    inset 0 0 50px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Beam */
+.hp-beam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(37, 99, 235, 0.08) 8%,
+    rgba(147, 51, 234, 0.15) 18%,
+    rgba(192, 100, 255, 0.4) 28%,
+    rgba(217, 70, 239, 0.7) 38%,
+    rgba(240, 200, 255, 0.9) 46%,
+    #fff 50%,
+    rgba(240, 200, 255, 0.9) 54%,
+    rgba(217, 70, 239, 0.7) 62%,
+    rgba(192, 100, 255, 0.4) 72%,
+    rgba(220, 38, 38, 0.15) 82%,
+    rgba(220, 38, 38, 0.08) 92%,
+    transparent
+  );
+  z-index: 4;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hp-beam.fire {
+  width: 100vw;
+}
+.hp-beam.expand {
+  width: 200vw;
+  transition: width 0.8s ease-out;
+}
+
+/* Flash */
+.hp-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #f0e0ff 30%,
+    rgba(147, 51, 234, 0.3) 100%
+  );
+  opacity: 0;
+  z-index: 8;
+}
+
+/* Shockwave rings */
+.hp-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(147, 51, 234, 0.6);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  animation: hpRing 1.2s ease-out forwards;
+}
+@keyframes hpRing {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+    border-width: 3px;
+  }
+  100% {
+    width: 200vmax;
+    height: 200vmax;
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* Thought bubble (Gojo speaks) */
+.hp-thought {
+  position: absolute;
+  z-index: 12;
+  bottom: calc(10% + 240px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.5);
+  background: rgba(12, 4, 28, 0.92);
+  border: 2px solid rgba(147, 51, 234, 0.5);
+  border-radius: 24px;
+  padding: 1.2rem 2.5rem 1rem;
+  opacity: 0;
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 0 40px rgba(147, 51, 234, 0.3),
+    0 0 80px rgba(147, 51, 234, 0.1),
+    inset 0 0 30px rgba(147, 51, 234, 0.08);
+}
+.hp-thought.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.hp-thought::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 20px;
+  height: 20px;
+  background: rgba(12, 4, 28, 0.92);
+  border-right: 2px solid rgba(147, 51, 234, 0.5);
+  border-bottom: 2px solid rgba(147, 51, 234, 0.5);
+}
+.hp-thought-main {
+  font-family: "Inter", sans-serif;
+  font-size: clamp(2rem, 5.5vw, 3.8rem);
+  font-weight: 900;
+  color: #fff;
+  text-shadow:
+    0 0 20px rgba(147, 51, 234, 0.9),
+    0 0 60px rgba(147, 51, 234, 0.5);
+  white-space: nowrap;
+  letter-spacing: 2px;
+  text-align: center;
+}
+.hp-thought-sub {
+  font-family: "JetBrains Mono", monospace;
+  font-size: clamp(0.55rem, 1.3vw, 0.85rem);
+  color: rgba(192, 132, 252, 0.8);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+/* Particles */
+.hp-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 100000;
+  border-radius: 50%;
+  animation: hpFloat 2s ease-out forwards;
+}
+@keyframes hpFloat {
+  0% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2) translate(var(--dx), var(--dy));
+  }
+}
+
+/* Screen shake */
+@keyframes hpShake {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  10% {
+    transform: translate(-8px, 4px);
+  }
+  20% {
+    transform: translate(7px, -5px);
+  }
+  30% {
+    transform: translate(-5px, 3px);
+  }
+  40% {
+    transform: translate(4px, -4px);
+  }
+  50% {
+    transform: translate(-4px, 5px);
+  }
+  60% {
+    transform: translate(5px, -3px);
+  }
+  70% {
+    transform: translate(-3px, 4px);
+  }
+  80% {
+    transform: translate(4px, -3px);
+  }
+  90% {
+    transform: translate(-3px, 2px);
+  }
+}
+.hp-shaking {
+  animation: hpShake 0.5s ease-in-out;
+}
+
+/* Gojo cameos after the attack (shapes and motion live in scenes/core.css) */
+.hp-cameo {
+  filter: drop-shadow(0 0 20px rgba(147, 51, 234, 0.5));
+}
+.hp-cameo-bubble {
+  --cameo-bg: rgba(12, 4, 28, 0.92);
+  --cameo-border: rgba(147, 51, 234, 0.5);
+  --cameo-text: #e9d5ff;
+  --cameo-glow: rgba(147, 51, 234, 0.2);
+}
