@@ -4,10 +4,13 @@
   "description": "Dhruv Desai's penguin-themed portfolio",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "DEV=1 node --watch server.js"
   },
   "dependencies": {
     "express": "^4.21.0",
-    "marked": "^17.0.1"
+    "katex": "^0.18.10",
+    "marked": "^17.0.1",
+    "marked-katex-extension": "^5.1.13"
   }
 }

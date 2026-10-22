@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { marked } = require('marked');
+const katex = require('katex');
+const markedKatex = require('marked-katex-extension');
 
 // ─── Gallery exhibits ───
 // In a post, write:
@@ -42,6 +44,111 @@ marked.use({
       return `<figure class="exhibit"><div class="exhibit-piece">${paras}</div>${caption}</figure>\n`;
     },
   },
+});
+
+// ─── Math (KaTeX, rendered server-side) ───
+//   inline:   $a^2 + b^2 = c^2$
+//   display:  $$ ... $$  on their own lines
+//   or a bare environment starting a line, no dollars needed:
+//     \begin{align*}
+//       \gcd(a, b) &= \gcd(b, a \bmod b) \\
+//                  &= \cdots
+//     \end{align*}
+// Inline $ follows Pandoc's rule: no space just inside either $, and a closing $ can't be followed
+// by a digit. So ($n = 1$) works, while "costs $5 and $10" stays plain text. \$ is a literal dollar.
+// A \newcommand anywhere in a post works for the rest of that post; macros reset per render.
+const inlineMathRule = /^(\${1,2})(?!\$)(?=\S)((?:\\.|[^\\\n$])+?)(?<!\s)\1(?!\d)/;
+const baseMacros = {
+  '\\N': '\\mathbb{N}', '\\Z': '\\mathbb{Z}', '\\Q': '\\mathbb{Q}', '\\R': '\\mathbb{R}', '\\C': '\\mathbb{C}',
+};
+const katexMacros = {};
+const katexOpts = { throwOnError: false, macros: katexMacros, globalGroup: true };
+
+// ─── Theorem-style blocks (amsthm-ish). Their insides are regular markdown, math included:
+//     \begin{theorem}[Bézout]          <- optional [title], may contain $math$
+//     For $a, b \in \Z$ there are $x, y$ with $ax + by = \gcd(a, b)$.
+//     \end{theorem}
+//
+//     \begin{proof}
+//     Run Euclid backwards...
+//     \end{proof}                      <- ends with a ∎; [Proof of X] renames it
+// theorem/lemma/proposition/corollary/definition share one counter per post; add * (theorem*) to skip numbering.
+const THM_ENVS = {
+  theorem: 'Theorem', lemma: 'Lemma', proposition: 'Proposition', corollary: 'Corollary',
+  definition: 'Definition', example: 'Example', remark: 'Remark', proof: 'Proof',
+};
+const THM_UNNUMBERED = new Set(['example', 'remark', 'proof']);
+const THM_NAMES = Object.keys(THM_ENVS).join('|');
+let thmCounter = 0;
+const dedent = s => {
+  const lines = s.replace(/^\n+|\s+$/g, '').split('\n');
+  const pad = Math.min(...lines.filter(l => l.trim()).map(l => l.match(/^ */)[0].length));
+  return lines.map(l => l.slice(pad)).join('\n');
+};
+
+// keep the extension's $$ block handling; swap its inline rule (it needs a space before the opening $)
+const katexExt = markedKatex(katexOpts);
+katexExt.extensions = katexExt.extensions.filter(e => e.level === 'block');
+marked.use(katexExt);
+marked.use({
+  hooks: {
+    preprocess(md) {
+      for (const k of Object.keys(katexMacros)) delete katexMacros[k];
+      Object.assign(katexMacros, baseMacros);
+      thmCounter = 0;
+      return md;
+    },
+  },
+  extensions: [{
+    name: 'texInline',
+    level: 'inline',
+    start(src) {
+      for (let i = src.indexOf('$'); i !== -1; i = src.indexOf('$', i + 1)) {
+        if (src[i - 1] !== '\\' && inlineMathRule.test(src.slice(i))) return i;
+      }
+    },
+    tokenizer(src) {
+      const m = src.match(inlineMathRule);
+      if (m) return { type: 'texInline', raw: m[0], tex: m[2], display: m[1].length === 2 };
+    },
+    renderer: ({ tex, display }) => katex.renderToString(tex, { ...katexOpts, displayMode: display }),
+  }, {
+    name: 'thmEnv',
+    level: 'block',
+    start: src => src.match(new RegExp(`^ {0,3}\\\\begin\\{(?:${THM_NAMES})\\*?\\}`, 'm'))?.index,
+    tokenizer(src) {
+      const m = src.match(new RegExp(
+        `^ {0,3}\\\\begin\\{((${THM_NAMES})\\*?)\\}(?:\\[([^\\]\\n]*)\\])?([\\s\\S]*?)\\\\end\\{\\1\\}[^\\S\\n]*(?:\\n+|$)`));
+      if (!m) return;
+      const [raw, full, env, title, body] = m;
+      const numbered = !full.endsWith('*') && !THM_UNNUMBERED.has(env);
+      return {
+        type: 'thmEnv', raw, env,
+        number: numbered ? ++thmCounter : null,
+        title: title ? this.lexer.inlineTokens(title.trim()) : null,
+        tokens: this.lexer.blockTokens(dedent(body), []),
+      };
+    },
+    renderer({ env, number, title, tokens }) {
+      const t = title && this.parser.parseInline(title);
+      // like LaTeX, a proof's [title] replaces "Proof" ("Proof of Bézout") instead of adding a parenthetical
+      const head = env === 'proof'
+        ? `<span class="thm-name">${t || 'Proof'}.</span>`
+        : `<span class="thm-name">${THM_ENVS[env]}${number ? ` ${number}` : ''}</span>`
+          + (t ? ` <span class="thm-title">(${t})</span>` : '');
+      return `<div class="thm thm-${env}"><div class="thm-head">${head}</div>`
+        + `<div class="thm-body">${this.parser.parse(tokens)}</div></div>\n`;
+    },
+  }, {
+    name: 'texEnv',
+    level: 'block',
+    start: src => src.match(/^\\begin\{/m)?.index,
+    tokenizer(src) {
+      const m = src.match(new RegExp(`^\\\\begin\\{(?!(?:${THM_NAMES})\\*?\\})([a-zA-Z*]+)\\}[\\s\\S]*?\\\\end\\{\\1\\}[^\\S\\n]*(?:\\n+|$)`));
+      if (m) return { type: 'texEnv', raw: m[0], tex: m[0].trim() };
+    },
+    renderer: ({ tex }) => katex.renderToString(tex, { ...katexOpts, displayMode: true }) + '\n',
+  }],
 });
 
 const app = express();
@@ -167,11 +274,57 @@ app.get('/api/posts/*', (req, res) => {
 
 // ─── Static files ───
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+app.use('/katex', express.static(path.dirname(require.resolve('katex'))));
+
+// ─── Dev mode (`npm run dev`): reload open tabs when posts/ or public/ change ───
+// server.js changes are handled by `node --watch`; the tab reloads once it reconnects.
+const DEV = process.env.DEV === '1';
+const devClients = new Set();
+const DEV_SCRIPT = `<script>
+(() => {
+  const y = sessionStorage.getItem('__devScroll');
+  if (y !== null) {
+    sessionStorage.removeItem('__devScroll');
+    // posts render async, so wait for the page to be tall enough to scroll back
+    const t0 = Date.now();
+    (function restore() {
+      if (document.body.scrollHeight >= +y + innerHeight || Date.now() - t0 > 3000) return scrollTo(0, +y);
+      requestAnimationFrame(restore);
+    })();
+  }
+  const reload = () => { sessionStorage.setItem('__devScroll', scrollY); location.reload(); };
+  let dropped = false;
+  const es = new EventSource('/__dev/events');
+  es.onmessage = reload;
+  es.onerror = () => { dropped = true; };
+  es.onopen = () => { if (dropped) reload(); };
+})();
+</script>`;
+if (DEV) {
+  app.get('/__dev/events', (req, res) => {
+    res.set({ 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
+    res.flushHeaders();
+    devClients.add(res);
+    req.on('close', () => devClients.delete(res));
+  });
+  let pending;
+  for (const dir of ['posts', 'public']) {
+    fs.watch(path.join(__dirname, dir), { recursive: true }, (_event, file) => {
+      if (!file || /(^|\/)\.|~$|\.sw[a-p]$/.test(file)) return; // editor swap/backup files
+      clearTimeout(pending);
+      pending = setTimeout(() => {
+        console.log(`  changed: ${dir}/${file}`);
+        for (const c of devClients) c.write('data: reload\n\n');
+      }, 80);
+    });
+  }
+}
 
 // ─── SPA fallback: serve index.html with visit count ───
 app.get('*', (req, res) => {
-  const count = trackVisit(req);
-  const html = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf-8');
+  const count = DEV ? 0 : trackVisit(req);
+  let html = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf-8');
+  if (DEV) html = html.replace('</body>', `${DEV_SCRIPT}</body>`);
   res.send(html.replace('id="visit-counter" data-count="0">0</div>', `id="visit-counter" data-count="${count}">${count}</div>`));
 });
 

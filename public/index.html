@@ -1504,6 +1504,106 @@
         color: var(--ice-light);
         border-radius: 4px;
       }
+      .post-content .katex-display {
+        margin: 1.5rem 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.25rem 0;
+      }
+      /* ─── Theorem / definition / proof blocks: frosted panels, accent rail on the left ─── */
+      .post-content .thm {
+        --thm-accent: var(--ice);
+        --thm-tint: rgba(126, 200, 227, 0.06);
+        position: relative;
+        margin: 1.75rem 0;
+        padding: 1rem 1.25rem 1.1rem 1.35rem;
+        background: var(--thm-tint);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--thm-accent);
+        border-radius: 0 10px 10px 0;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        color: var(--text-bright);
+        line-height: 1.75;
+      }
+      .post-content .thm-definition {
+        --thm-accent: var(--warm);
+        --thm-tint: rgba(244, 168, 124, 0.06);
+      }
+      .post-content .thm-example,
+      .post-content .thm-remark {
+        --thm-accent: var(--text-dim);
+        --thm-tint: rgba(214, 221, 232, 0.03);
+      }
+      .post-content .thm-proof {
+        --thm-accent: rgba(126, 200, 227, 0.35);
+        --thm-tint: rgba(214, 221, 232, 0.025);
+        border-style: dashed solid dashed solid;
+        border-left-style: solid;
+        padding-right: 2.5rem; /* room for the ∎ */
+        color: var(--text);
+      }
+      .post-content .thm-head {
+        margin-bottom: 0.4rem;
+        font-size: 0.82rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--thm-accent);
+      }
+      .post-content .thm-name {
+        font-weight: 700;
+      }
+      .post-content .thm-title {
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 0.95rem;
+        color: var(--ice-light);
+      }
+      .post-content .thm-definition .thm-title {
+        color: var(--warm);
+      }
+      .post-content .thm-proof .thm-head {
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 0.95rem;
+        font-style: italic;
+        color: var(--ice-light);
+      }
+      .post-content .thm-body > :first-child {
+        margin-top: 0;
+      }
+      .post-content .thm-body > :last-child {
+        margin-bottom: 0;
+      }
+      .post-content .thm-body .katex-display {
+        margin: 1rem 0;
+      }
+      .post-content .thm-body > :last-child .katex-display:last-child,
+      .post-content .thm-body > .katex-display:last-child {
+        margin-bottom: 0.25rem;
+      }
+      /* the ∎, drawn as a box since text fonts render U+220E as a sliver */
+      .post-content .thm-proof::after {
+        content: "";
+        position: absolute;
+        right: 1.05rem;
+        bottom: 1.15rem;
+        width: 0.55rem;
+        height: 0.55rem;
+        background: var(--ice);
+        border-radius: 1px;
+      }
+      .post-content .thm .thm {
+        margin: 1rem 0;
+      }
+      @media (max-width: 600px) {
+        .post-content .thm {
+          padding: 0.85rem 1rem 0.95rem 1rem;
+        }
+        .post-content .thm-proof {
+          padding-right: 2.1rem;
+        }
+      }
       .post-content pre {
         background: var(--bg-raised);
         border: 1px solid var(--border);
@@ -2267,6 +2367,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="/katex/katex.min.css" />
     <link rel="stylesheet" href="/scenes/core.css" />
   </head>
   <body>
