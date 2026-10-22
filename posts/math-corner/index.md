@@ -9,4 +9,4 @@ tags: math
 
 This is just my dump of random math facts and stuff
 
-- [Euclid's Algorithm]('/math-corner/euclid-algo'): Euclid's algorithm which spelt the start of the ERA of number theory
+- [GCD algorithms]('/math-corner/gcd-algo'): Some interesting artifacts about finding the Greatest Common Divisor of 2 Integers
