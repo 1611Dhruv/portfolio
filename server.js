@@ -60,6 +60,7 @@ marked.use({
 const inlineMathRule = /^(\${1,2})(?!\$)(?=\S)((?:\\.|[^\\\n$])+?)(?<!\s)\1(?!\d)/;
 const baseMacros = {
   '\\N': '\\mathbb{N}', '\\Z': '\\mathbb{Z}', '\\Q': '\\mathbb{Q}', '\\R': '\\mathbb{R}', '\\C': '\\mathbb{C}',
+  '\\O': '\\mathcal{O}', // big-O
 };
 const katexMacros = {};
 const katexOpts = { throwOnError: false, macros: katexMacros, globalGroup: true };

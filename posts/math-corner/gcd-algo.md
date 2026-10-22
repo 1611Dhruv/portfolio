@@ -77,7 +77,7 @@ $$
 which is exactly what the algorithm returns.
 \end{proof}
 
-It still feels illegal. Another cool thing is that this actually works in O(log n) time which I find very fascinating. Here is a short proof for that
+It still feels illegal. Another cool thing is that this actually works in O(log n) time which I find very fascinating. (Proof at the end, once we have a few more tools.)
 
 ## Bézout's Identity
 
@@ -94,7 +94,7 @@ The story goes that this was already discovered way back by Aryabhata (around 49
 \begin{proof}
 The proof is an induction over the steps of Euclid's algorithm, running backwards from where it stops. We use the same $a_k, b_k$ as in the previous proof, and let $g = \gcd(a, b)$. By Part 1 of that proof, every step has the same gcd, so $\gcd(a_k, b_k) = g$ for all $k$.
 
-**Base case ($b_m = 0$).** Let step $m$ be where the algorithm stops, with $b_m = 0$ (one step past the last line of the previous proof, which is how the code counts it). Then
+**Base case** ($b_m = 0$) :  Let step $m$ be where the algorithm stops, with $b_m = 0$ (one step past the last line of the previous proof, which is how the code counts it). Then
 
 $$
 g = \gcd(a_m, 0) = a_m = a_m \cdot 1 + b_m \cdot 0,
@@ -153,3 +153,33 @@ ll gcd_ext(ll a, ll b, ll &x, ll &y) {
 }
 
 ```
+
+## Time Complexity Analysis
+
+Naively you'd think that this algorithm runs in $\O(\min(a, b))$ steps, since all we know so far is that the remainder drops by at least $1$ each time. But turns out we can do better.
+
+We will show that $r_{i+2} < r_i / 2$, which means the remainder at least halves every 2 steps, resulting in $\O(\log \min(a, b))$ time complexity.
+
+\begin{proof}
+Step $i + 2$ divides $a_{i+2} = r_i$ by $b_{i+2} = r_{i+1}$, so $r_{i+2} = r_i \bmod r_{i+1}$. (If $r_{i+1} = 0$, the algorithm has already stopped, so assume $r_{i+1} > 0$.) We will consider 2 cases, depending on how big $r_{i+1}$ is compared to $r_i$:
+
+**Case 1** ($r_{i+1} \le r_i / 2$): A remainder is always smaller than the thing you divided by, so
+
+$$
+r_{i+2} < r_{i+1} \le \frac{r_i}{2}.
+$$
+
+**Case 2** ($r_i / 2 < r_{i+1} < r_i$): Now $r_{i+1}$ fits into $r_i$ exactly once, since $r_i < 2 r_{i+1}$. So the quotient is $1$, and
+
+\begin{align*}
+r_{i+2} &= r_i - r_{i+1} \\
+        &< r_i - \frac{r_i}{2} \\
+        &= \frac{r_i}{2}.
+\end{align*}
+
+Either way, $r_{i+2} < r_i / 2$.
+
+So every two steps, the remainder at least halves. It starts below $b_1 = \min(a, b)$, so after $2k$ more steps it's below $\min(a, b) / 2^k$. A remainder can't be a positive number below $1$, so it must hit $0$ once $2^k \ge \min(a, b)$. That's at most about $2 \log_2 \min(a, b)$ steps. Each step is a single `%` on machine integers, which is $\O(1)$, so the whole algorithm runs in $\O(\log \min(a, b))$.
+\end{proof}
+
+Fun fact: this bound is basically tight. The worst case is two consecutive Fibonacci numbers, where every quotient is $1$ and the remainders shrink as slowly as possible. Gabriel Lamé proved this in 1844, and his proof is often cited as the beginning of computational complexity theory.
